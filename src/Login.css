@@ -1,0 +1,98 @@
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 20px;
+  background: #f7fafc;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 440px;
+  padding: 40px;
+  background: white;
+  border-radius: 18px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+}
+
+.login-card h1 {
+  color: #12364a;
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.login-card p {
+  color: #647783;
+  margin-bottom: 25px;
+}
+
+.login-card h3 {
+  color: #12364a;
+  margin-bottom: 12px;
+}
+
+.role-options {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.role-options button {
+  flex: 1;
+  padding: 13px 8px;
+  border: 1px solid #d5e0e5;
+  border-radius: 9px;
+  background: white;
+  color: #12364a;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.role-options button.selected {
+  background: #e5f4f0;
+  border: 2px solid #08a88a;
+  color: #087c76;
+}
+
+.login-card form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-card label {
+  color: #12364a;
+  font-weight: 600;
+  margin-bottom: 7px;
+}
+
+.login-card input {
+  padding: 13px;
+  margin-bottom: 18px;
+  border: 1px solid #d5e0e5;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.login-submit {
+  padding: 14px;
+  border: none;
+  border-radius: 9px;
+  background: #08a88a;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.login-submit:hover {
+  background: #078c73;
+}
+
+.login-card .login-note {
+  margin-top: 20px;
+  margin-bottom: 0;
+  font-size: 13px;
+  text-align: center;
+}

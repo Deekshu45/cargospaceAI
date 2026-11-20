@@ -1,0 +1,423 @@
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+background: linear-gradient(
+  120deg,
+  #F3EBDD 0%,
+  #E8D5BD 55%,
+  #D9B99B 100%
+);
+  color: #142b3b;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+}
+
+.app {
+  width: 100%;
+  overflow: hidden;
+}
+
+.navbar {
+  height: 82px;
+  padding: 0 8%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  border-bottom: 1px solid #e8eef2;
+}
+
+.logo {
+  font-family: 'Manrope', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  color: #12364a;
+}
+
+.logo-icon {
+  margin-right: 5px;
+}
+
+.logo-ai {
+  color: #08a88a;
+}
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+}
+
+.nav-links a {
+  color: #526675;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.nav-links a:hover {
+  color: #08a88a;
+}
+
+.nav-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.login-btn {
+  background: transparent;
+  color: #12364a;
+  padding: 12px 18px;
+  font-weight: 700;
+}
+
+.signup-btn,
+.primary-btn {
+ background: linear-gradient(135deg, #B8794E, #945B38); 
+  color: white;
+  padding: 14px 22px;
+  border-radius: 8px;
+  font-weight: 700;
+  box-shadow: 0 6px 18px rgba(148, 91, 56, 0.20);
+}
+
+.signup-btn:hover,
+.primary-btn:hover {
+  background: #078c73;
+}
+
+.hero {
+  min-height: 560px;
+  padding: 85px 8%;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: 50px;
+  background: linear-gradient(120deg, #edf8f7, #f5f9fc);
+}
+
+.eyebrow {
+  color: #079d83;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.hero h1 {
+  font-family: 'Manrope', sans-serif;
+  font-size: clamp(38px, 5vw, 62px);
+  line-height: 1.13;
+  margin: 22px 0;
+  color: #12364a;
+}
+
+.hero h1 span {
+  color: #08a88a;
+}
+
+.hero-content > p {
+  max-width: 540px;
+  color: #647783;
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+
+.secondary-btn {
+  padding: 14px 22px;
+  border: 1px solid #08a88a;
+  border-radius: 8px;
+  background: white;
+  color: #078c73;
+  font-weight: 700;
+}
+
+.secondary-btn:hover {
+  background: #e5f7f3;
+}
+
+.hero-note {
+  margin-top: 32px;
+  color: #71838e;
+  font-size: 13px;
+}
+
+.hero-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ship-card {
+  width: 100%;
+  max-width: 430px;
+  min-height: 320px;
+  padding: 40px 30px;
+  border-radius: 24px;
+  text-align: center;
+  background: linear-gradient(
+  145deg,
+  #35483B 0%,
+  #52664F 60%,
+  #74816A 100%
+);
+  color: white;
+  box-shadow: 0 25px 60px rgba(18, 62, 83, 0.2);
+}
+
+.ship-emoji {
+  font-size: 90px;
+  margin-bottom: 20px;
+}
+
+.ship-card h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.ship-card p {
+  color: #c4e9e1;
+}
+
+.ship-route {
+  margin-top: 28px;
+  padding: 14px 8px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.12);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  gap: 8px;
+}
+
+.route-line {
+  color: #65e3c3;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: white;
+  padding: 38px 8%;
+  text-align: center;
+  border-bottom: 1px solid #e8eef2;
+}
+
+.stats h2 {
+  font-size: 30px;
+  color: #079d83;
+  margin-bottom: 6px;
+}
+
+.stats p {
+  color: #71838e;
+  font-size: 14px;
+}
+
+.features,
+.listings {
+  padding: 90px 8%;
+}
+
+.section-heading {
+  text-align: center;
+  margin-bottom: 45px;
+}
+
+.section-heading h2 {
+  font-family: 'Manrope', sans-serif;
+  font-size: clamp(28px, 4vw, 40px);
+  color: #12364a;
+  margin: 14px 0;
+}
+
+.section-heading p {
+  color: #71838e;
+  line-height: 1.7;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.feature-card {
+  padding: 34px 28px;
+  background: white;
+  border: 1px solid #e6eef0;
+  border-radius: 16px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.feature-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 35px rgba(18, 54, 74, 0.08);
+}
+
+.feature-icon {
+  font-size: 38px;
+  margin-bottom: 20px;
+}
+
+.feature-card h3 {
+  color: #12364a;
+  margin-bottom: 12px;
+  font-size: 20px;
+}
+
+.feature-card p {
+  color: #71838e;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.listings {
+  background: #edf8f7;
+}
+
+.listing-card {
+  max-width: 800px;
+  margin: auto;
+  padding: 28px;
+  background: white;
+  border: 1px solid #e0eceb;
+  border-radius: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.listing-label {
+  font-size: 11px;
+  font-weight: 800;
+  color: #079d83;
+  letter-spacing: 1px;
+}
+
+.listing-card h3 {
+  margin: 12px 0;
+  color: #12364a;
+}
+
+.listing-card p {
+  color: #71838e;
+  font-size: 14px;
+}
+
+.listing-price {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: right;
+}
+
+.listing-price span {
+  color: #71838e;
+  font-size: 12px;
+}
+
+.listing-price strong {
+  color: #079d83;
+  font-size: 24px;
+}
+
+.sample-note {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 12px;
+  color: #71838e;
+}
+
+.footer {
+  padding: 45px 8%;
+  text-align: center;
+ background: linear-gradient(120deg, #26382D, #35483B);
+  color: #c6d6df;
+}
+
+.footer .logo {
+  color: white;
+  margin-bottom: 15px;
+}
+
+.footer p {
+  margin-top: 10px;
+  font-size: 13px;
+}
+
+@media (max-width: 800px) {
+  .navbar {
+    padding: 20px 5%;
+    height: auto;
+    flex-wrap: wrap;
+    gap: 18px;
+  }
+
+  .nav-links {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 60px 6%;
+  }
+
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+  }
+
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .listing-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .listing-price {
+    text-align: left;
+  }
+}
+
+@media (max-width: 450px) {
+  .nav-actions {
+    width: 100%;
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+  }
+
+  .ship-route {
+    font-size: 11px;
+  }
+}
