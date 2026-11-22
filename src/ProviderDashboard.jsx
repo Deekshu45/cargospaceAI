@@ -7,7 +7,8 @@ function ProviderDashboard( {onLogout}) {
     const[containers,setContainers]=useState([]);
   return (
     <div className="provider-dashboard">
-      <nav className="provider-navbar">,<button onClick={onLogout}>Logout</button>
+      <nav className="provider-navbar">
+        <button onClick={onLogout}>Logout</button>
         <h2>CargoShare AI</h2>
         <span>Logistics Provider Dashboard</span>
       </nav>
@@ -24,7 +25,7 @@ function ProviderDashboard( {onLogout}) {
         <section className="provider-stats">
           <div className="provider-stat-card">
             <h3>Total Containers</h3>
-            <h2>0</h2>
+            <h2>{containers.length}</h2>
             <p>Published containers</p>
           </div>
 

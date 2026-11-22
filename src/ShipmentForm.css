@@ -1,0 +1,96 @@
+
+.shipment-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+.shipment-form {
+  background: #ffffff;
+  width: 100%;
+  max-width: 600px;
+  padding: 30px;
+  border-radius: 14px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  margin: auto;
+}
+
+.shipment-form h2 {
+  color: #087c76;
+  margin-bottom: 8px;
+}
+
+.shipment-form p {
+  color: #666;
+  margin-bottom: 22px;
+}
+
+.shipment-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.shipment-form label {
+  font-weight: 600;
+  color: #333;
+  margin-top: 8px;
+}
+
+.shipment-form input,
+.shipment-form select,
+.shipment-form textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 7px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.shipment-form textarea {
+  min-height: 85px;
+  resize: vertical;
+}
+
+.shipment-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.shipment-buttons button {
+  flex: 1;
+  padding: 13px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  background: #087c76;
+  color: white;
+}
+
+.shipment-buttons button:last-child {
+  background: #e5e5e5;
+  color: #333;
+}
+
+.shipment-buttons button:hover {
+  opacity: 0.85;
+}
+
+@media (max-width: 500px) {
+  .shipment-form {
+    padding: 20px;
+  }
+
+  .shipment-buttons {
+    flex-direction: column;
+  }
+}
