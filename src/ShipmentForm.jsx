@@ -1,8 +1,10 @@
 
+import { useShipments } from "./ShipmentContext";
 import { useState } from "react";
 import "./ShipmentForm.css";
 
 function ShipmentForm() {
+  const{addShipment}=useShipments();
   const [shipment, setShipment] = useState({
     origin: "",
     destination: "",
@@ -24,12 +26,26 @@ function ShipmentForm() {
     });
   }
 
-  function handleSubmit(event) {
-    event.preventDefault();
+  
+function handleSubmit(event) {
+  event.preventDefault();
 
-    console.log("Shipment details:", shipment);
-    setMessage("Shipment details submitted successfully!");
-  }
+  addShipment(shipment);
+
+  console.log("Shipment details:", shipment);
+
+  setMessage("Shipment submitted successfully!");
+
+  setShipment({
+    origin: "",
+    destination: "",
+    departureDate: "",
+    cargoType: "",
+    weight: "",
+    volume: "",
+  });
+}
+
 
   return (
     <div className="shipment-page">

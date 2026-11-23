@@ -1,20 +1,9 @@
-
 import React, { useState } from "react";
 import "./App.css";
 import Login from "./Login.jsx";
-import ShipmentForm from"./ShipmentForm.jsx";
-import Marketplace from "./Marketplace.jsx";
 
 function App() {
   const [showLogin, setShowLogin] = useState(false);
-  const [showShipment, setShowShipment] = useState(false);
-
-if (showShipment) {
-  return <ShipmentForm />;
-}
-if (showMarketplace) {
-  return <Marketplace />;
-}
 
   if (showLogin) {
     return <Login />;
@@ -33,7 +22,7 @@ if (showMarketplace) {
 
         <div className="nav-actions">
           <button
-            className="log-btn"
+            className="login-btn"
             onClick={() => setShowLogin(true)}
           >
             Log in
@@ -52,7 +41,6 @@ if (showMarketplace) {
         <div className="hero-content">
           <div className="hero-text">
             <h1>Don't ship empty space. Share it.</h1>
-            
 
             <p>
               Connect with logistics providers, find available cargo
@@ -60,34 +48,19 @@ if (showMarketplace) {
             </p>
 
             <div className="hero-buttons">
-              </div>
-              </section>
+              <button
+                className="primary-btn"
+                onClick={() => setShowLogin(true)}
+              >
+                Find Cargo Space
+              </button>
 
-  <button
-  className="primary-btn"
-  onClick={() => setShowMarketplace(true)}
->
-  Find Cargo Space
-</button>
-
-    
-
-  <button
-    className="secondary-btn"
-    onClick={() => setShowShipment(true)}
-  >
-    Create Shipment
-  </button>
-
-  <button
-    className="secondary-btn"
-    onClick={() => setShowLogin(true)}
-  >
-    Become a Provider
-  </button>
-
-</div>
-
+              <button
+                className="secondary-btn"
+                onClick={() => setShowLogin(true)}
+              >
+                Become a Provider
+              </button>
             </div>
           </div>
 
@@ -104,7 +77,6 @@ if (showMarketplace) {
               <p>Sample demonstration listing</p>
             </div>
           </div>
-        </div>
         </div>
       </section>
 

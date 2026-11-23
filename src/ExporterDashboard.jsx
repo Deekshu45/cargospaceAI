@@ -1,9 +1,13 @@
 import "./Dashboard.css";
-
+import ShipmentForm from "./ShipmentForm.jsx";
+import Marketplace from "./Marketplace.jsx";
+import { useState } from "react";
 function ExporterDashboard({ onLogout }) {
+  const [showShipmentForm, setShowShipmentForm] = useState(false);
   return (
     <div className="dashboard">
-      <nav className="dashboard-nav">,<button onClick={onLogout}>Logout</button>
+      <nav className="dashboard-nav">
+        <button onClick={onLogout}>Logout</button>
         <h2>CargoShare AI</h2>
         <span>Exporter Dashboard</span>
       </nav>
@@ -50,7 +54,12 @@ function ExporterDashboard({ onLogout }) {
               Enter your cargo details to find suitable
               shipping opportunities.
             </p>
-            <button type="button">Add Shipment</button>
+  <button
+  type="button"
+  onClick={() => setShowShipmentForm(true)}
+>
+  Add Shipment
+</button>
           </div>
 
           <div className="action-card">
@@ -68,6 +77,24 @@ function ExporterDashboard({ onLogout }) {
           <p>You don't have any shipments yet.</p>
           <p>Your shipment activity will appear here.</p>
         </div>
+        {showShipmentForm && (
+  <div className="shipment-form-container">
+    <h2>Add New Shipment</h2>
+
+    <button
+      type="button"
+      onClick={() => setShowShipmentForm(false)}
+    >
+      Close Form
+    </button>
+<ShipmentForm />
+  </div>
+)}
+ 
+
+<section>
+  <Marketplace />
+</section>
       </div>
     </div>
   );
