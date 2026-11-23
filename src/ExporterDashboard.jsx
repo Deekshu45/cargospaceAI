@@ -1,11 +1,286 @@
-import { useEffect, useState } from "react";
-import { auth, db } from "./firebase.js";
 
-import {
-  collection,
-  addDoc,
-  query,
-  where,
-  onSnapshot,
-  serverTimestamp
-} from "firebase/firestore";
+import { useState } from "react";
+import ShipmentForm from "./ShipmentForm.jsx";
+import "./Dashboard.css";
+
+function ExporterDashboard({ onLogout }) {
+  const [showShipmentForm, setShowShipmentForm] = useState(false);
+  const [shipments, setShipments] = useState([]);
+  const [selectedShipment, setSelectedShipment] = useState(null);
+
+  function handleShipmentSubmit(newShipment) {
+    const shipmentWithDetails = {
+      ...newShipment,
+      status: "Submitted",
+      id: Date.now()
+    };
+
+    setShipments((previous) => [
+      ...previous,
+      shipmentWithDetails
+    ]);
+
+    setShowShipmentForm(false);
+  }
+
+  return (
+    <div className="dashboard">
+
+      {/* Navigation */}
+      <nav className="dashboard-nav">
+        <h2>CargoShare AI</h2>
+        <span>Exporter Dashboard</span>
+
+        <button type="button" onClick={onLogout}>
+          Logout
+        </button>
+      </nav>
+
+      <div className="dashboard-content">
+
+        {/* Welcome */}
+        <div className="dashboard-welcome">
+          <h1>Welcome, Exporter!</h1>
+          <p>
+            Manage your shipments and discover affordable cargo space.
+          </p>
+        </div>
+
+        {/* Statistics */}
+        <div className="dashboard-stats">
+
+          <div className="dashboard-card">
+            <h3>My Shipments</h3>
+            <h2>{shipments.length}</h2>
+            <p>Total shipments</p>
+          </div>
+
+          <div className="dashboard-card">
+            <h3>Booking Requests</h3>
+            <h2>0</h2>
+            <p>Pending requests</p>
+          </div>
+
+          <div className="dashboard-card">
+            <h3>Potential Savings</h3>
+            <h2>₹0</h2>
+            <p>Estimated savings</p>
+          </div>
+
+        </div>
+
+        {/* Dashboard Actions */}
+        <div className="dashboard-actions">
+
+          <div className="action-card">
+            <h2>Find Cargo Space</h2>
+            <p>
+              Search for available container space matching
+              your shipping route and cargo requirements.
+            </p>
+
+            <button
+              type="button"
+              onClick={() => setShowShipmentForm(true)}
+            >
+              Find Cargo Space
+            </button>
+          </div>
+
+          <div className="action-card">
+            <h2>Add a Shipment</h2>
+            <p>
+              Enter your cargo details to find suitable
+              shipping opportunities.
+            </p>
+
+            <button
+              type="button"
+              onClick={() => setShowShipmentForm(true)}
+            >
+              Add Shipment
+            </button>
+          </div>
+
+          <div className="action-card">
+            <h2>AI Cargo Assistant</h2>
+            <p>
+              Describe your cargo in simple language and
+              let AI help organise your shipment details.
+            </p>
+
+            <button type="button">
+              Try AI Assistant
+            </button>
+          </div>
+
+        </div>
+
+        {/* Shipment List */}
+        <div className="recent-activity">
+
+          <h2>My Shipments</h2>
+
+          {shipments.length === 0 ? (
+            <div>
+              <p>You don't have any shipments yet.</p>
+              <p>Your shipment activity will appear here.</p>
+            </div>
+          ) : (
+
+            <div className="shipment-list">
+
+              {shipments.map((shipment) => (
+
+                <div className="shipment-card" key={shipment.id}>
+
+                  <p className="shipment-reference">
+                    Shipment ID: CS-{shipment.id}
+                  </p>
+
+                  <h3>
+                    {shipment.origin} → {shipment.destination}
+                  </h3>
+
+                  <p>
+                    <strong>Shipping Date:</strong>{" "}
+                    {shipment.shippingDate}
+                  </p>
+
+                  <p>
+                    <strong>Cargo Type:</strong>{" "}
+                    {shipment.cargoType}
+                  </p>
+
+                  <p>
+                    <strong>Description:</strong>{" "}
+                    {shipment.description}
+                  </p>
+
+                  <p>
+                    <strong>Volume:</strong>{" "}
+                    {shipment.volume} CBM
+                  </p>
+
+                  <p>
+                    <strong>Weight:</strong>{" "}
+                    {shipment.weight} KG
+                  </p>
+
+                  <p>
+                    <strong>Special Requirements:</strong>{" "}
+                    {shipment.specialRequirements || "None"}
+                  </p>
+
+                  <span className="shipment-status">
+                    {shipment.status}
+                  </span>
+
+                  <button
+                    type="button"
+                    onClick={() => setSelectedShipment(shipment)}
+                    style={{
+                      backgroundColor: "#087c76",
+                      color: "#ffffff",
+                      border: "none",
+                      padding: "10px 18px",
+                      borderRadius: "8px",
+                      fontWeight: "bold",
+                      cursor: "pointer",
+                      marginTop: "12px"
+                    }}
+                  >
+                    View Details
+                  </button>
+
+                </div>
+
+              ))}
+
+            </div>
+          )}
+
+        </div>
+
+        {/* Shipment Form */}
+        {showShipmentForm && (
+          <ShipmentForm
+            onCancel={() => setShowShipmentForm(false)}
+            onSubmit={handleShipmentSubmit}
+          />
+        )}
+
+      </div>
+
+      {/* Shipment Details Modal */}
+      {selectedShipment && (
+
+        <div className="shipment-modal-overlay">
+
+          <div className="shipment-modal">
+
+            <h2>Shipment Details</h2>
+
+            <p>
+              <strong>Origin:</strong>{" "}
+              {selectedShipment.origin}
+            </p>
+
+            <p>
+              <strong>Destination:</strong>{" "}
+              {selectedShipment.destination}
+            </p>
+
+            <p>
+              <strong>Cargo Type:</strong>{" "}
+              {selectedShipment.cargoType}
+            </p>
+
+            <p>
+              <strong>Description:</strong>{" "}
+              {selectedShipment.description}
+            </p>
+
+            <p>
+              <strong>Volume:</strong>{" "}
+              {selectedShipment.volume} CBM
+            </p>
+
+            <p>
+              <strong>Weight:</strong>{" "}
+              {selectedShipment.weight} KG
+            </p>
+
+            <p>
+              <strong>Shipping Date:</strong>{" "}
+              {selectedShipment.shippingDate}
+            </p>
+
+            <p>
+              <strong>Special Requirements:</strong>{" "}
+              {selectedShipment.specialRequirements || "None"}
+            </p>
+
+            <p>
+              <strong>Status:</strong>{" "}
+              {selectedShipment.status}
+            </p>
+
+            <button
+              type="button"
+              onClick={() => setSelectedShipment(null)}
+            >
+              Close
+            </button>
+
+          </div>
+
+        </div>
+
+      )}
+
+    </div>
+  );
+}
+
+export default ExporterDashboard;
