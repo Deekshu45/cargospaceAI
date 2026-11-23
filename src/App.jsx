@@ -19,7 +19,6 @@ function App() {
   if (showShipment) {
     return (
       <ShipmentForm
-        onSubmit={() => setShowShipment(false)}
         onCancel={() => setShowShipment(false)}
       />
     );
@@ -45,7 +44,7 @@ function App() {
 
         <div className="nav-actions">
           <button
-            className="log-btn"
+            className="login-btn"
             onClick={() => setShowLogin(true)}
           >
             Log in

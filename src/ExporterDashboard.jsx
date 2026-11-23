@@ -1,11 +1,14 @@
 
 import { useState } from "react";
+import { useShipments } from "./ShipmentContext";
 import ShipmentForm from "./ShipmentForm.jsx";
+import Marketplace from "./Marketplace.jsx";
 import "./Dashboard.css";
 
 function ExporterDashboard({ onLogout }) {
+  const { shipments } = useShipments();
+
   const [showShipmentForm, setShowShipmentForm] = useState(false);
-  const [shipments, setShipments] = useState([]);
   const [selectedShipment, setSelectedShipment] = useState(null);
 
   function handleShipmentSubmit(newShipment) {
@@ -46,7 +49,11 @@ function ExporterDashboard({ onLogout }) {
           </p>
         </div>
 
+
+        {/* Dashboard Statistics */}
+
         {/* Statistics */}
+ 
         <div className="dashboard-stats">
 
           <div className="dashboard-card">
@@ -116,26 +123,28 @@ function ExporterDashboard({ onLogout }) {
 
         </div>
 
-        {/* Shipment List */}
+        {/* Recent Shipments */}
         <div className="recent-activity">
 
           <h2>My Shipments</h2>
 
           {shipments.length === 0 ? (
+
             <div>
               <p>You don't have any shipments yet.</p>
               <p>Your shipment activity will appear here.</p>
             </div>
+
           ) : (
 
             <div className="shipment-list">
 
-              {shipments.map((shipment) => (
+              {shipments.map((shipment, index) => (
 
-                <div className="shipment-card" key={shipment.id}>
+                <div className="shipment-card" key={index}>
 
                   <p className="shipment-reference">
-                    Shipment ID: CS-{shipment.id}
+                    Shipment ID: CS-{1001 + index}
                   </p>
 
                   <h3>
@@ -173,7 +182,7 @@ function ExporterDashboard({ onLogout }) {
                   </p>
 
                   <span className="shipment-status">
-                    {shipment.status}
+                    {shipment.status || "Submitted"}
                   </span>
 
                   <button
@@ -198,6 +207,7 @@ function ExporterDashboard({ onLogout }) {
               ))}
 
             </div>
+
           )}
 
         </div>
@@ -206,9 +216,13 @@ function ExporterDashboard({ onLogout }) {
         {showShipmentForm && (
           <ShipmentForm
             onCancel={() => setShowShipmentForm(false)}
-            onSubmit={handleShipmentSubmit}
           />
         )}
+
+        {/* Marketplace */}
+        <section>
+          <Marketplace />
+        </section>
 
       </div>
 
@@ -259,11 +273,6 @@ function ExporterDashboard({ onLogout }) {
             <p>
               <strong>Special Requirements:</strong>{" "}
               {selectedShipment.specialRequirements || "None"}
-            </p>
-
-            <p>
-              <strong>Status:</strong>{" "}
-              {selectedShipment.status}
             </p>
 
             <button
