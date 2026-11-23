@@ -38,6 +38,7 @@ function Marketplace() {
   const [maxPrice, setMaxPrice] = useState("");
   const [selectedListing, setSelectedListing] = useState(null);
   const [message, setMessage] = useState("");
+ const [bookingRequests, setBookingRequests] = useState([]); 
 
   const filteredListings = sampleListings.filter((item) => {
     const matchesOrigin = item.origin
@@ -163,14 +164,29 @@ function Marketplace() {
 
             <p>Estimated price: ₹{selectedListing.price.toLocaleString("en-IN")}</p>
 
-            <button
-              className="marketplace-button"
-              onClick={() => setMessage(
-                "Demo request submitted. Booking is not yet confirmed."
-              )}
-            >
-              Request Cargo Space
-            </button>
+           <button
+  className="marketplace-button"
+  onClick={() => {
+    const newRequest = {
+      id: Date.now(),
+      origin: selectedListing.origin,
+      destination: selectedListing.destination,
+      cargoType: "Electronics",
+      volume: 5,
+      weight: 1200,
+      status: "Pending"
+    };
+
+    setBookingRequests((previous) => [
+      ...previous,
+      newRequest
+    ]);
+
+    setMessage("Demo request submitted successfully. Status: Pending.");
+  }}
+>
+  Request Cargo Space
+</button> 
 
             {message && <p>{message}</p>}
 
