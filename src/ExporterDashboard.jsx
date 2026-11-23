@@ -11,14 +11,32 @@ function ExporterDashboard({ onLogout }) {
   const [showShipmentForm, setShowShipmentForm] = useState(false);
   const [selectedShipment, setSelectedShipment] = useState(null);
 
+  function handleShipmentSubmit(newShipment) {
+    const shipmentWithDetails = {
+      ...newShipment,
+      status: "Submitted",
+      id: Date.now()
+    };
+
+    setShipments((previous) => [
+      ...previous,
+      shipmentWithDetails
+    ]);
+
+    setShowShipmentForm(false);
+  }
+
   return (
     <div className="dashboard">
 
       {/* Navigation */}
       <nav className="dashboard-nav">
-        <button onClick={onLogout}>Logout</button>
         <h2>CargoShare AI</h2>
         <span>Exporter Dashboard</span>
+
+        <button type="button" onClick={onLogout}>
+          Logout
+        </button>
       </nav>
 
       <div className="dashboard-content">
@@ -31,7 +49,11 @@ function ExporterDashboard({ onLogout }) {
           </p>
         </div>
 
+
         {/* Dashboard Statistics */}
+
+        {/* Statistics */}
+ 
         <div className="dashboard-stats">
 
           <div className="dashboard-card">
@@ -60,7 +82,7 @@ function ExporterDashboard({ onLogout }) {
           <div className="action-card">
             <h2>Find Cargo Space</h2>
             <p>
-              Search for available container space that matches
+              Search for available container space matching
               your shipping route and cargo requirements.
             </p>
 
@@ -90,8 +112,8 @@ function ExporterDashboard({ onLogout }) {
           <div className="action-card">
             <h2>AI Cargo Assistant</h2>
             <p>
-              Describe your cargo in simple language and let
-              AI help organise your shipment details.
+              Describe your cargo in simple language and
+              let AI help organise your shipment details.
             </p>
 
             <button type="button">

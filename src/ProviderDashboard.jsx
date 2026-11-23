@@ -21,7 +21,7 @@ function ProviderDashboard({ onLogout }) {
     0
   );
 
-  // Add a new container
+  // Publish a new container
   const handlePublish = (newContainer) => {
     setContainers((previous) => [
       ...previous,
@@ -47,11 +47,11 @@ function ProviderDashboard({ onLogout }) {
     }
   };
 
-  // View published containers
+  // Scroll to published containers
   const handleViewContainers = () => {
-    document.getElementById("published-containers")?.scrollIntoView({
-      behavior: "smooth"
-    });
+    document
+      .getElementById("published-containers")
+      ?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -106,6 +106,7 @@ function ProviderDashboard({ onLogout }) {
         {/* Provider Actions */}
         <section className="provider-actions">
 
+          {/* Publish Container */}
           <div className="provider-action-card">
             <h2>Publish Container Space</h2>
 
@@ -132,6 +133,7 @@ function ProviderDashboard({ onLogout }) {
             </button>
           </div>
 
+          {/* Manage Containers */}
           <div className="provider-action-card">
             <h2>Manage Containers</h2>
 
@@ -169,8 +171,10 @@ function ProviderDashboard({ onLogout }) {
             <p>No containers published yet.</p>
           ) : (
             containers.map((container) => (
-              <div key={container.id} className="listing-card">
-
+              <div
+                key={container.id}
+                className="listing-card"
+              >
                 <h3>
                   {container.origin} → {container.destination}
                 </h3>
