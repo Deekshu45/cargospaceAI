@@ -98,11 +98,20 @@ const totalAvailableWeight = containers.reduce(
               View your published containers and update their
               available capacity.
             </p>
-            <button type="button">View My Containers</button>
+            <button
+  type="button"
+  onClick={() => {
+    document
+      .getElementById("my-published-containers")
+      ?.scrollIntoView({ behavior: "smooth" });
+  }}
+>
+  View My Containers
+</button>
           </div>
         </section>
         <section className="provider-bookings">
-  <h2>My Published Containers</h2>
+  <h2 id="My Published Containers">My Published Containers</h2>
 
   {containers.length === 0 ? (
     <p>No containers published yet.</p>
