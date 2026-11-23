@@ -2,9 +2,19 @@
 import React, { useState } from "react";
 import "./App.css";
 import Login from "./Login.jsx";
+import ShipmentForm from"./ShipmentForm.jsx";
+import Marketplace from "./Marketplace.jsx";
 
 function App() {
   const [showLogin, setShowLogin] = useState(false);
+  const [showShipment, setShowShipment] = useState(false);
+
+if (showShipment) {
+  return <ShipmentForm />;
+}
+if (showMarketplace) {
+  return <Marketplace />;
+}
 
   if (showLogin) {
     return <Login />;
@@ -23,7 +33,7 @@ function App() {
 
         <div className="nav-actions">
           <button
-            className="login-btn"
+            className="log-btn"
             onClick={() => setShowLogin(true)}
           >
             Log in
@@ -42,6 +52,7 @@ function App() {
         <div className="hero-content">
           <div className="hero-text">
             <h1>Don't ship empty space. Share it.</h1>
+            
 
             <p>
               Connect with logistics providers, find available cargo
@@ -49,19 +60,34 @@ function App() {
             </p>
 
             <div className="hero-buttons">
-              <button
-                className="primary-btn"
-                onClick={() => setShowLogin(true)}
-              >
-                Find Cargo Space
-              </button>
+              </div>
+              </section>
 
-              <button
-                className="secondary-btn"
-                onClick={() => setShowLogin(true)}
-              >
-                Become a Provider
-              </button>
+  <button
+  className="primary-btn"
+  onClick={() => setShowMarketplace(true)}
+>
+  Find Cargo Space
+</button>
+
+    
+
+  <button
+    className="secondary-btn"
+    onClick={() => setShowShipment(true)}
+  >
+    Create Shipment
+  </button>
+
+  <button
+    className="secondary-btn"
+    onClick={() => setShowLogin(true)}
+  >
+    Become a Provider
+  </button>
+
+</div>
+
             </div>
           </div>
 
@@ -78,6 +104,7 @@ function App() {
               <p>Sample demonstration listing</p>
             </div>
           </div>
+        </div>
         </div>
       </section>
 
