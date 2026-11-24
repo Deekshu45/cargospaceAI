@@ -1,6 +1,46 @@
 
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap');
 
+/* =================================
+   CARGOSHARE AI - GLOBAL THEME
+================================= */
+
+:root {
+  --mist-blue: #2F5061;
+  --coral-pink: #E57184;
+  --warm-cream: #EAE3C9;
+
+  --app-gradient: linear-gradient(
+    120deg,
+    #2F5061 0%,
+    #9B5D88 50%,
+    #E57184 100%
+  );
+
+  --button-gradient: linear-gradient(
+    110deg,
+    #2F5061,
+    #9B5D88,
+    #E57184
+  );
+
+  --button-hover: linear-gradient(
+    110deg,
+    #243F4D,
+    #824C74,
+    #D65F75
+  );
+
+  --text-color: #2F5061;
+  --muted-color: #d4498ff4;
+  --card-background: #FFFFFF;
+}
+
+/* =================================
+   RESET AND BODY
+================================= */
+
+
 * {
   margin: 0;
   padding: 0;
@@ -83,6 +123,23 @@ button {
   background: transparent;
   color: #12364a;
   padding: 12px 18px;
+}
+/* =================================
+   ALL MAIN BUTTONS
+================================= */
+
+.log-btn,
+.signup-btn,
+.primary-btn,
+.secondary-btn,
+.marketplace-button {
+  background: var(--button-gradient);
+  color: #ffffff;
+  padding: 13px 22px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  font-size: 14px;
+
   font-weight: 700;
 }
 
@@ -421,3 +478,21 @@ button {
     font-size: 11px;
   }
 }
+
+.nav-actions .log-btn {
+  background: #d733b4 !important;
+  color: #ffffff !important;
+  border: 2px solid #2f5ccd !important;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.nav-actions .log-btn:hover {
+  background: #ca5592 !important;
+  color: #ffffff !important;
+  border-color: #db61bf !important;
+}
+
