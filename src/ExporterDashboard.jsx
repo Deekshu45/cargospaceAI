@@ -13,7 +13,7 @@ function ExporterDashboard({ onLogout }) {
 
   const [showAIAssistant, setShowAIAssistant] = useState(false);
 const [aiDescription, setAiDescription] = useState("");
-=======
+
 
   function handleShipmentSubmit(newShipment) {
     const shipmentWithDetails = {
