@@ -8,9 +8,14 @@ export function ShipmentProvider({ children }) {
   const addShipment = (shipment) => {
     setShipments((prev) => [...prev, shipment]);
   };
+  const deleteShipment = (shipmentId) => {
+  setShipments((prev) =>
+    prev.filter((shipment) => shipment.id !== shipmentId)
+  );
+};
 
   return (
-    <ShipmentContext.Provider value={{ shipments, addShipment }}>
+    <ShipmentContext.Provider value={{ shipments, addShipment , deleteShipment}}>
       {children}
     </ShipmentContext.Provider>
   );

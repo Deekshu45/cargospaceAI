@@ -10,11 +10,19 @@ function Login() {
 const[isLoggedIn,setIsLoggedIn]=useState(false);
 if (isLoggedIn) {
   if (role === "Exporter") {
-    return <ExporterDashboard />;
+    return (
+  <ExporterDashboard
+    onLogout={() => setIsLoggedIn(false)}
+  />
+);
   }
 
   if (role === "Provider") {
-    return <ProviderDashboard />;
+    return (
+  <ProviderDashboard
+    onLogout={() => setIsLoggedIn(false)}
+  />
+);
   }
 }
 

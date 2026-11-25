@@ -6,29 +6,23 @@ import Marketplace from "./Marketplace.jsx";
 import "./Dashboard.css";
 
 function ExporterDashboard({ onLogout }) {
-  const { shipments } = useShipments();
-
+  const { shipments, addShipment, deleteShipment } = useShipments();
   const [showShipmentForm, setShowShipmentForm] = useState(false);
   const [selectedShipment, setSelectedShipment] = useState(null);
 
   const [showAIAssistant, setShowAIAssistant] = useState(false);
 const [aiDescription, setAiDescription] = useState("");
 
+function handleShipmentSubmit(newShipment) {
+  const shipmentWithDetails = {
+    ...newShipment,
+    status: "Pending",
+    id: Date.now()
+  };
 
-  function handleShipmentSubmit(newShipment) {
-    const shipmentWithDetails = {
-      ...newShipment,
-      status: "Submitted",
-      id: Date.now()
-    };
-
-    setShipments((previous) => [
-      ...previous,
-      shipmentWithDetails
-    ]);
-
-    setShowShipmentForm(false);
-  }
+  addShipment(shipmentWithDetails);
+  setShowShipmentForm(false);
+}
 
 
   return (
@@ -112,6 +106,7 @@ const [aiDescription, setAiDescription] = useState("");
             >
               Add Shipment
             </button>
+            
           </div>
 
           <div className="action-card">
@@ -128,10 +123,6 @@ const [aiDescription, setAiDescription] = useState("");
   Try AI Assistant
 </button>
 
-
-            <button type="button">
-              Try AI Assistant
-            </button>
 
           </div>
 
@@ -215,8 +206,36 @@ const [aiDescription, setAiDescription] = useState("");
                   >
                     View Details
                   </button>
+                 
+                <button
+                    type="button"
+                    onClick={() => {
+                       const confirmDelete = window.confirm(
+                       "Are you sure you want to delete this shipment?"
+      );
+
+                   if (confirmDelete) {
+                         deleteShipment(Shipment.id);
+                         setSelectedShipment(null);
+  }
+}}
+  style={{
+    backgroundColor: "#dc3545",
+    color: "#ffffff",
+    border: "none",
+    padding: "10px 18px",
+    borderRadius: "8px",
+    cursor: "pointer",
+    marginTop: "12px",
+    marginLeft: "10px"
+  }}
+>
+  Delete Shipment
+</button>
+
 
                 </div>
+                
 
               ))}
 
@@ -227,18 +246,36 @@ const [aiDescription, setAiDescription] = useState("");
         </div>
 
         {/* Shipment Form */}
-        {showShipmentForm && (
-          <ShipmentForm
-            onCancel={() => setShowShipmentForm(false)}
-          />
-        )}
-
-        {/* Marketplace */}
-        <section>
-          <Marketplace />
-        </section>
+        
 
       </div>
+
+{/* Shipment Form */}
+{showShipmentForm && (
+  <ShipmentForm
+    onCancel={() => setShowShipmentForm(false)}
+    onSubmit={(newShipment) => {
+      addShipment({
+        ...newShipment,
+        id: Date.now(),
+        status: "Pending",
+      });
+
+      setShowShipmentForm(false);
+    {showShipmentForm && (
+  <ShipmentForm
+    onCancel={() => setShowShipmentForm(false)}
+    onSubmit={handleShipmentSubmit}
+  />
+)} 
+    }}
+  />
+)}
+
+{/* Marketplace */}
+<section>
+  <Marketplace />
+</section>
 
       {/* Shipment Details Modal */}
       {selectedShipment && (
@@ -289,12 +326,40 @@ const [aiDescription, setAiDescription] = useState("");
               {selectedShipment.specialRequirements || "None"}
             </p>
 
-            <button
-              type="button"
-              onClick={() => setSelectedShipment(null)}
-            >
-              Close
-            </button>
+           
+<button
+  type="button"
+  onClick={() => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this shipment?"
+    );
+
+    if (confirmDelete) {
+      deleteShipment(selectedShipment.id);
+
+      setSelectedShipment(null);
+    }
+  }}
+  style={{
+    backgroundColor: "#dc3545",
+    color: "white",
+    padding: "10px 18px",
+    border: "none",
+    borderRadius: "8px",
+    cursor: "pointer",
+    marginRight: "10px"
+  }}
+>
+  Delete Shipment
+</button>
+
+<button
+  type="button"
+  onClick={() => setSelectedShipment(null)}
+>
+  Close
+</button>
+ 
 
           </div>
 
