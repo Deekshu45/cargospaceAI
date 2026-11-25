@@ -259,3 +259,52 @@
 .shipment-modal button:hover {
   background: #065e59;
 }
+/* Mobile horizontal overflow fix */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.dashboard {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.dashboard-content {
+  width: 100%;
+  padding: 25px 16px;
+}
+
+.shipment-list {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.shipment-card,
+.dashboard-card,
+.action-card {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 750px) {
+  .dashboard-welcome h1 {
+    font-size: 25px;
+  }
+
+  .dashboard-nav {
+    padding: 15px 16px;
+  }
+
+  .dashboard-content {
+    padding: 25px 16px;
+  }
+}

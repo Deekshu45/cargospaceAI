@@ -15,6 +15,7 @@ if (isLoggedIn) {
     onLogout={() => setIsLoggedIn(false)}
   />
 );
+
   }
 
   if (role === "Provider") {
@@ -23,7 +24,16 @@ if (isLoggedIn) {
     onLogout={() => setIsLoggedIn(false)}
   />
 );
+
   }
+if (role === "Provider") {
+  return (
+    <ProviderDashboard
+      onLogout={() => setIsLoggedIn(false)}
+    />
+  );
+}
+  
 }
 
   function handleSubmit(event) {

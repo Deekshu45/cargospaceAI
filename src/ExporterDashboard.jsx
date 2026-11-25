@@ -13,6 +13,16 @@ function ExporterDashboard({ onLogout }) {
   const [showAIAssistant, setShowAIAssistant] = useState(false);
 const [aiDescription, setAiDescription] = useState("");
 
+
+
+  function handleShipmentSubmit(newShipment) {
+    const shipmentWithDetails = {
+      ...newShipment,
+      status: "Submitted",
+      id: Date.now()
+    };
+
+
 function handleShipmentSubmit(newShipment) {
   const shipmentWithDetails = {
     ...newShipment,
