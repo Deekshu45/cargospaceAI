@@ -11,6 +11,10 @@ function ExporterDashboard({ onLogout }) {
   const [showShipmentForm, setShowShipmentForm] = useState(false);
   const [selectedShipment, setSelectedShipment] = useState(null);
 
+  const [showAIAssistant, setShowAIAssistant] = useState(false);
+const [aiDescription, setAiDescription] = useState("");
+=======
+
   function handleShipmentSubmit(newShipment) {
     const shipmentWithDetails = {
       ...newShipment,
@@ -25,6 +29,7 @@ function ExporterDashboard({ onLogout }) {
 
     setShowShipmentForm(false);
   }
+
 
   return (
     <div className="dashboard">
@@ -116,9 +121,18 @@ function ExporterDashboard({ onLogout }) {
               let AI help organise your shipment details.
             </p>
 
+           <button
+  type="button"
+  onClick={() => setShowAIAssistant(true)}
+>
+  Try AI Assistant
+</button>
+
+
             <button type="button">
               Try AI Assistant
             </button>
+
           </div>
 
         </div>
@@ -288,6 +302,55 @@ function ExporterDashboard({ onLogout }) {
 
       )}
 
+    
+ 
+      {showAIAssistant && (
+        <div className="shipment-modal-overlay">
+          <div className="shipment-modal">
+            <h2>AI Cargo Assistant</h2>
+
+            <p>
+              Describe your cargo in simple language.
+              The assistant will help organise your shipment details.
+            </p>
+
+            <textarea
+              value={aiDescription}
+              onChange={(e) => setAiDescription(e.target.value)}
+              placeholder="Example: Ship 500 kg of electronics from Mumbai to Singapore."
+              rows={5}
+              style={{
+                width: "100%",
+                padding: "12px",
+                borderRadius: "8px",
+                border: "1px solid #ccc",
+                marginTop: "15px"
+              }}
+              />
+             <button
+                type="button"
+                disabled={!aiDescription.trim()}
+                onClick={() => alert("AI integration will be connected by Member 2.")}
+             >  
+                Generate Shipment Details
+            </button>
+            <button
+                 type="button"
+                 onClick={() => setAiDescription("")}
+            >
+                 Clear Description
+            </button>
+            
+
+            <button
+              type="button"
+              onClick={() => setShowAIAssistant(false)}
+            >
+              Close Assistant
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

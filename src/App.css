@@ -32,15 +32,19 @@
   );
 
   --text-color: #2F5061;
+
+  --muted-color: #d4498ff4;
+
   --muted-color: #647783;
+
   --card-background: #FFFFFF;
 }
 
 /* =================================
    RESET AND BODY
-================================= */
+====================================*/
 
-* {
+ {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -126,9 +130,35 @@ a:focus-visible {
   gap: 12px;
 }
 
+
+.login-btn {
+  background: transparent;
+  color: #12364a;
+  padding: 12px 18px;
+}
 /* =================================
    ALL MAIN BUTTONS
 ================================= */
+
+.log-btn,
+.signup-btn,
+.primary-btn,
+.secondary-btn,
+.marketplace-button {
+  background: var(--button-gradient);
+  color: #ffffff;
+  padding: 13px 22px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  font-size: 14px;
+
+  font-weight: 700;
+}
+
+/* =================================
+   ALL MAIN BUTTONS
+================================= */
+
 
 .log-btn,
 .signup-btn,
@@ -563,3 +593,21 @@ a:focus-visible {
     padding: 60px 5%;
   }
 }
+
+.nav-actions .log-btn {
+  background: #d733b4 !important;
+  color: #ffffff !important;
+  border: 2px solid #2f5ccd !important;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.nav-actions .log-btn:hover {
+  background: #ca5592 !important;
+  color: #ffffff !important;
+  border-color: #db61bf !important;
+}
+
