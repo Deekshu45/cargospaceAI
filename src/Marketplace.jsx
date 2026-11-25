@@ -1,4 +1,5 @@
 
+import { useShipments } from "./ShipmentContext";
 import { useState } from "react";
 import "./Marketplace.css";
 
@@ -33,11 +34,13 @@ const sampleListings = [
 ];
 
 function Marketplace() {
+  const{shipments}=useShipments();
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [selectedListing, setSelectedListing] = useState(null);
   const [message, setMessage] = useState("");
+ const [bookingRequests, setBookingRequests] = useState([]); 
 
   const filteredListings = sampleListings.filter((item) => {
     const matchesOrigin = item.origin
@@ -104,6 +107,30 @@ function Marketplace() {
             </div>
           </div>
         </section>
+        
+<section className="marketplace-listings">
+  <h2>Available Shipments</h2>
+
+  {shipments.length === 0 ? (
+    <p>No shipments available yet.</p>
+  ) : (
+    shipments.map((item) => (
+      <div className="listing-card" key={item.id}>
+        <h3>
+          {item.origin} → {item.destination}
+        </h3>
+
+        <p>Cargo Type: {item.cargoType}</p>
+        <p>Departure: {item.departureDate}</p>
+        <p>Weight: {item.weight} kg</p>
+        <p>Volume: {item.volume} CBM</p>
+
+        <span>{item.status}</span>
+      </div>
+    ))
+  )}
+</section>
+
 
         <section className="marketplace-results">
           <h2>Available Containers</h2>
@@ -163,14 +190,29 @@ function Marketplace() {
 
             <p>Estimated price: ₹{selectedListing.price.toLocaleString("en-IN")}</p>
 
-            <button
-              className="marketplace-button"
-              onClick={() => setMessage(
-                "Demo request submitted. Booking is not yet confirmed."
-              )}
-            >
-              Request Cargo Space
-            </button>
+           <button
+  className="marketplace-button"
+  onClick={() => {
+    const newRequest = {
+      id: Date.now(),
+      origin: selectedListing.origin,
+      destination: selectedListing.destination,
+      cargoType: "Electronics",
+      volume: 5,
+      weight: 1200,
+      status: "Pending"
+    };
+
+    setBookingRequests((previous) => [
+      ...previous,
+      newRequest
+    ]);
+
+    setMessage("Demo request submitted successfully. Status: Pending.");
+  }}
+>
+  Request Cargo Space
+</button> 
 
             {message && <p>{message}</p>}
 

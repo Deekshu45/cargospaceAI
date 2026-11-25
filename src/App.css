@@ -32,16 +32,19 @@
   );
 
   --text-color: #2F5061;
+
   --muted-color: #d4498ff4;
+
+  --muted-color: #647783;
+
   --card-background: #FFFFFF;
 }
 
 /* =================================
    RESET AND BODY
-================================= */
+====================================*/
 
-
-* {
+ {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -53,19 +56,21 @@ html {
 
 body {
   font-family: 'DM Sans', sans-serif;
-background: linear-gradient(
-  120deg,
-  #F3EBDD 0%,
-  #E8D5BD 55%,
-  #D9B99B 100%
-);
-  color: #142b3b;
+  background: var(--warm-cream);
+  color: var(--text-color);
 }
 
 button {
   font-family: inherit;
   cursor: pointer;
   border: none;
+  transition: all 0.3s ease;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--coral-pink);
+  outline-offset: 3px;
 }
 
 .app {
@@ -73,21 +78,26 @@ button {
   overflow: hidden;
 }
 
+/* =================================
+   NAVIGATION BAR
+================================= */
+
 .navbar {
-  height: 82px;
+  min-height: 82px;
   padding: 0 8%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: white;
-  border-bottom: 1px solid #e8eef2;
+  gap: 20px;
+  background: var(--warm-cream);
+  border-bottom: 2px solid rgba(47, 80, 97, 0.15);
 }
 
 .logo {
   font-family: 'Manrope', sans-serif;
   font-size: 24px;
   font-weight: 800;
-  color: #12364a;
+  color: var(--mist-blue);
 }
 
 .logo-icon {
@@ -95,7 +105,7 @@ button {
 }
 
 .logo-ai {
-  color: #08a88a;
+  color: #9B5D88;
 }
 
 .nav-links {
@@ -104,20 +114,22 @@ button {
 }
 
 .nav-links a {
-  color: #526675;
+  color: var(--mist-blue);
   text-decoration: none;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
+  transition: color 0.3s ease;
 }
 
 .nav-links a:hover {
-  color: #08a88a;
+  color: #9B5D88;
 }
 
 .nav-actions {
   display: flex;
   gap: 12px;
 }
+
 
 .login-btn {
   background: transparent;
@@ -143,20 +155,50 @@ button {
   font-weight: 700;
 }
 
+/* =================================
+   ALL MAIN BUTTONS
+================================= */
+
+
+.log-btn,
 .signup-btn,
-.primary-btn {
- background: linear-gradient(135deg, #B8794E, #945B38); 
-  color: white;
-  padding: 14px 22px;
+.primary-btn,
+.secondary-btn,
+.marketplace-button {
+  background: var(--button-gradient);
+  color: #FFFFFF;
+  padding: 13px 22px;
+  border: 2px solid transparent;
   border-radius: 8px;
+  font-size: 14px;
   font-weight: 700;
-  box-shadow: 0 6px 18px rgba(148, 91, 56, 0.20);
+  cursor: pointer;
+  box-shadow: 0 5px 14px rgba(47, 80, 97, 0.18);
+  transition: all 0.3s ease;
 }
 
+.log-btn:hover,
 .signup-btn:hover,
-.primary-btn:hover {
-  background: #078c73;
+.primary-btn:hover,
+.secondary-btn:hover,
+.marketplace-button:hover {
+  background: var(--button-hover);
+  color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(47, 80, 97, 0.25);
 }
+
+.log-btn:active,
+.signup-btn:active,
+.primary-btn:active,
+.secondary-btn:active,
+.marketplace-button:active {
+  transform: translateY(0);
+}
+
+/* =================================
+   HERO SECTION
+================================= */
 
 .hero {
   min-height: 560px;
@@ -165,11 +207,16 @@ button {
   grid-template-columns: 1.1fr 0.9fr;
   align-items: center;
   gap: 50px;
-  background: linear-gradient(120deg, #edf8f7, #f5f9fc);
+  background: linear-gradient(
+    120deg,
+    #EAE3C9 0%,
+    #F3DCE0 55%,
+    #E57184 100%
+  );
 }
 
 .eyebrow {
-  color: #079d83;
+  color: #9B5D88;
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 2px;
@@ -180,21 +227,22 @@ button {
   font-size: clamp(38px, 5vw, 62px);
   line-height: 1.13;
   margin: 22px 0;
-  color: #12364a;
+  color: var(--mist-blue);
 }
 
 .hero h1 span {
-  color: #08a88a;
+  color: #9B5D88;
 }
 
 .hero-content > p {
   max-width: 540px;
-  color: #647783;
+  color: #526675;
   font-size: 17px;
   line-height: 1.8;
 }
 
-.hero-actions {
+.hero-actions,
+.hero-buttons {
   display: flex;
   gap: 14px;
   margin-top: 32px;
@@ -202,23 +250,22 @@ button {
 }
 
 .secondary-btn {
-  padding: 14px 22px;
-  border: 1px solid #08a88a;
-  border-radius: 8px;
-  background: white;
-  color: #078c73;
-  font-weight: 700;
+  background: var(--mist-blue);
 }
 
 .secondary-btn:hover {
-  background: #e5f7f3;
+  background: #243F4D;
 }
 
 .hero-note {
   margin-top: 32px;
-  color: #71838e;
+  color: #526675;
   font-size: 13px;
 }
+
+/* =================================
+   SHIP CARD
+================================= */
 
 .hero-visual {
   display: flex;
@@ -233,14 +280,16 @@ button {
   padding: 40px 30px;
   border-radius: 24px;
   text-align: center;
+
   background: linear-gradient(
-  145deg,
-  #35483B 0%,
-  #52664F 60%,
-  #74816A 100%
-);
-  color: white;
-  box-shadow: 0 25px 60px rgba(18, 62, 83, 0.2);
+    145deg,
+    #2F5061 0%,
+    #9B5D88 55%,
+    #E57184 100%
+  );
+
+  color: #FFFFFF;
+  box-shadow: 0 25px 60px rgba(47, 80, 97, 0.25);
 }
 
 .ship-emoji {
@@ -254,14 +303,14 @@ button {
 }
 
 .ship-card p {
-  color: #c4e9e1;
+  color: #FFFFFF;
 }
 
 .ship-route {
   margin-top: 28px;
   padding: 14px 8px;
   border-radius: 10px;
-  background: rgba(255,255,255,0.12);
+  background: rgba(255, 255, 255, 0.15);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -270,32 +319,44 @@ button {
 }
 
 .route-line {
-  color: #65e3c3;
+  color: #EAE3C9;
 }
+
+/* =================================
+   STATS SECTION
+================================= */
 
 .stats {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  background: white;
+  background: #FFFFFF;
   padding: 38px 8%;
   text-align: center;
-  border-bottom: 1px solid #e8eef2;
+  border-bottom: 1px solid rgba(47, 80, 97, 0.15);
 }
 
 .stats h2 {
   font-size: 30px;
-  color: #079d83;
+  color: #9B5D88;
   margin-bottom: 6px;
 }
 
 .stats p {
-  color: #71838e;
+  color: var(--muted-color);
   font-size: 14px;
 }
+
+/* =================================
+   FEATURES AND LISTINGS
+================================= */
 
 .features,
 .listings {
   padding: 90px 8%;
+}
+
+.features {
+  background: var(--warm-cream);
 }
 
 .section-heading {
@@ -306,12 +367,12 @@ button {
 .section-heading h2 {
   font-family: 'Manrope', sans-serif;
   font-size: clamp(28px, 4vw, 40px);
-  color: #12364a;
+  color: var(--mist-blue);
   margin: 14px 0;
 }
 
 .section-heading p {
-  color: #71838e;
+  color: var(--muted-color);
   line-height: 1.7;
 }
 
@@ -323,15 +384,16 @@ button {
 
 .feature-card {
   padding: 34px 28px;
-  background: white;
-  border: 1px solid #e6eef0;
+  background: #FFFFFF;
+  border: 1px solid rgba(47, 80, 97, 0.15);
+  border-top: 4px solid var(--coral-pink);
   border-radius: 16px;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .feature-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 16px 35px rgba(18, 54, 74, 0.08);
+  box-shadow: 0 16px 35px rgba(47, 80, 97, 0.14);
 }
 
 .feature-icon {
@@ -340,27 +402,36 @@ button {
 }
 
 .feature-card h3 {
-  color: #12364a;
+  color: var(--mist-blue);
   margin-bottom: 12px;
   font-size: 20px;
 }
 
 .feature-card p {
-  color: #71838e;
+  color: var(--muted-color);
   font-size: 14px;
   line-height: 1.8;
 }
 
+/* =================================
+   MARKETPLACE LISTINGS
+================================= */
+
 .listings {
-  background: #edf8f7;
+  background: linear-gradient(
+    120deg,
+    #EAE3C9,
+    #F3DCE0
+  );
 }
 
 .listing-card {
   max-width: 800px;
   margin: auto;
   padding: 28px;
-  background: white;
-  border: 1px solid #e0eceb;
+  background: #FFFFFF;
+  border: 1px solid rgba(47, 80, 97, 0.15);
+  border-left: 5px solid var(--coral-pink);
   border-radius: 14px;
   display: flex;
   justify-content: space-between;
@@ -371,17 +442,17 @@ button {
 .listing-label {
   font-size: 11px;
   font-weight: 800;
-  color: #079d83;
+  color: #9B5D88;
   letter-spacing: 1px;
 }
 
 .listing-card h3 {
   margin: 12px 0;
-  color: #12364a;
+  color: var(--mist-blue);
 }
 
 .listing-card p {
-  color: #71838e;
+  color: var(--muted-color);
   font-size: 14px;
 }
 
@@ -393,12 +464,12 @@ button {
 }
 
 .listing-price span {
-  color: #71838e;
+  color: var(--muted-color);
   font-size: 12px;
 }
 
 .listing-price strong {
-  color: #079d83;
+  color: #9B5D88;
   font-size: 24px;
 }
 
@@ -406,25 +477,39 @@ button {
   text-align: center;
   margin-top: 18px;
   font-size: 12px;
-  color: #71838e;
+  color: var(--muted-color);
 }
+
+/* =================================
+   FOOTER
+================================= */
 
 .footer {
   padding: 45px 8%;
   text-align: center;
- background: linear-gradient(120deg, #26382D, #35483B);
-  color: #c6d6df;
+  background: linear-gradient(
+    110deg,
+    #2F5061,
+    #9B5D88,
+    #E57184
+  );
+  color: #FFFFFF;
 }
 
 .footer .logo {
-  color: white;
+  color: #FFFFFF;
   margin-bottom: 15px;
 }
 
 .footer p {
   margin-top: 10px;
   font-size: 13px;
+  color: #FFFFFF;
 }
+
+/* =================================
+   RESPONSIVE TABLET DESIGN
+================================= */
 
 @media (max-width: 800px) {
   .navbar {
@@ -465,9 +550,17 @@ button {
   }
 }
 
+/* =================================
+   RESPONSIVE MOBILE DESIGN
+================================= */
+
 @media (max-width: 450px) {
   .nav-actions {
     width: 100%;
+  }
+
+  .nav-actions button {
+    flex: 1;
   }
 
   .nav-links {
@@ -476,6 +569,28 @@ button {
 
   .ship-route {
     font-size: 11px;
+  }
+
+  .hero {
+    padding: 45px 5%;
+  }
+
+  .hero h1 {
+    font-size: 36px;
+  }
+
+  .hero-buttons button,
+  .hero-actions button {
+    width: 100%;
+  }
+
+  .stats {
+    padding: 30px 5%;
+  }
+
+  .features,
+  .listings {
+    padding: 60px 5%;
   }
 }
 

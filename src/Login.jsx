@@ -7,14 +7,15 @@ import ProviderDashboard from "./ProviderDashboard.jsx";
 function Login() {
   const [role, setRole] = useState("Exporter");
   const [isSignup, setIsSignup] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+const[isLoggedIn,setIsLoggedIn]=useState(false);
+if (isLoggedIn) {
+  if (role === "Exporter") {
+    return <ExporterDashboard />;
+  }
 
-  if (isLoggedIn && role === "Exporter") {
-  return <ExporterDashboard onLogout={() => setIsLoggedIn(false)} />;
-}
-
-if (isLoggedIn && role === "Provider") {
-  return <ProviderDashboard onLogout={() => setIsLoggedIn(false)} />;
+  if (role === "Provider") {
+    return <ProviderDashboard />;
+  }
 }
 
   function handleSubmit(event) {

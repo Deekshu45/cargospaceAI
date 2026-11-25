@@ -10,6 +10,7 @@ function App() {
   const [showShipment, setShowShipment] = useState(false);
   const [showMarketplace, setShowMarketplace] = useState(false);
 
+
   if (showShipment) {
     return (
       <ShipmentForm
@@ -19,16 +20,32 @@ function App() {
     );
   }
 
+
+
+  // Open Marketplace
+
   if (showMarketplace) {
     return <Marketplace />;
   }
 
+  // Open Shipment Form
+  if (showShipment) {
+    return (
+      <ShipmentForm
+        onCancel={() => setShowShipment(false)}
+      />
+    );
+  }
+
+  // Open Login
   if (showLogin) {
     return <Login />;
   }
 
   return (
     <div className="app">
+
+      {/* Navigation */}
       <nav className="navbar">
         <div className="logo">CargoShare AI</div>
 
@@ -40,7 +57,7 @@ function App() {
 
         <div className="nav-actions">
           <button
-            className="log-btn"
+            className="login-btn"
             onClick={() => setShowLogin(true)}
           >
             Log in
@@ -55,8 +72,10 @@ function App() {
         </div>
       </nav>
 
+      {/* Hero Section */}
       <section className="hero" id="home">
         <div className="hero-content">
+
           <div className="hero-text">
             <h1>Don't ship empty space. Share it.</h1>
 
@@ -66,6 +85,7 @@ function App() {
             </p>
 
             <div className="hero-buttons">
+
               <button
                 className="primary-btn"
                 onClick={() => setShowMarketplace(true)}
@@ -86,6 +106,7 @@ function App() {
               >
                 Become a Provider
               </button>
+
             </div>
           </div>
 
@@ -104,9 +125,11 @@ function App() {
               <p>Sample demonstration listing</p>
             </div>
           </div>
+
         </div>
       </section>
 
+      {/* Statistics */}
       <section className="stats">
         <div>
           <h2>Smarter</h2>
@@ -124,11 +147,13 @@ function App() {
         </div>
       </section>
 
+      {/* Features */}
       <section className="features" id="how-it-works">
         <h2>How CargoShare AI Works</h2>
         <p>Making cargo sharing simpler and smarter.</p>
 
         <div className="feature-container">
+
           <div className="feature-card">
             <h3>Find Cargo Space</h3>
             <p>
@@ -152,9 +177,11 @@ function App() {
               shipping empty space.
             </p>
           </div>
+
         </div>
       </section>
 
+      {/* Marketplace Preview */}
       <section className="marketplace" id="marketplace">
         <h2>Explore Available Cargo Space</h2>
         <p>Example listing for demonstration purposes only.</p>
@@ -170,18 +197,20 @@ function App() {
 
           <button
             className="primary-btn"
-            onClick={() => setShowLogin(true)}
+            onClick={() => setShowMarketplace(true)}
           >
             Request Cargo Space
           </button>
         </div>
       </section>
 
+      {/* Footer */}
       <footer className="footer">
         <h2>CargoShare AI</h2>
         <p>Don't ship empty space. Share it.</p>
         <p>© 2026 CargoShare AI. All rights reserved.</p>
       </footer>
+
     </div>
   );
 }
