@@ -15,6 +15,16 @@ if (isLoggedIn) {
     onLogout={() => setIsLoggedIn(false)}
   />
 );
+
+  }
+
+  if (role === "Provider") {
+    return (
+  <ProviderDashboard
+    onLogout={() => setIsLoggedIn(false)}
+  />
+);
+
   }
 if (role === "Provider") {
   return (
