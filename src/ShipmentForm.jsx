@@ -3,6 +3,25 @@ import { useState } from "react";
 import { useShipments } from "./ShipmentContext";
 import "./ShipmentForm.css";
 
+function ShipmentForm({
+  onSubmit,
+  onCancel,
+  initialData,
+  submitLabel = "Submit Shipment"
+}) {
+  const [formData, setFormData] = useState({
+    origin: initialData?.origin || "",
+    destination: initialData?.destination || "",
+    shippingDate: initialData?.shippingDate || "",
+    cargoType: initialData?.cargoType || "",
+    description:
+      initialData?.description ||
+      initialData?.cargoDescription || "",
+    volume: initialData?.volume ?? "",
+    weight: initialData?.weight ?? "",
+    specialRequirements:
+      initialData?.specialRequirements ||
+      initialData?.specialHandling || ""
 function ShipmentForm({ onCancel }) {
   const { addShipment } = useShipments();
 
@@ -15,21 +34,26 @@ function ShipmentForm({ onCancel }) {
     volume: "",
     weight: "",
     specialRequirements: ""
+
   });
 
   const [message, setMessage] = useState("");
 
   function handleChange(event) {
     const { name, value } = event.target;
+    setFormData((previous) => ({
 
     setShipment((previous) => ({
+
       ...previous,
       [name]: value
     }));
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
+
+    await onSubmit(formData);
 
     addShipment({
   ...shipment,
@@ -50,11 +74,17 @@ onCancel();
       weight: "",
       specialRequirements: ""
     });
+
   }
 
   return (
     <div className="shipment-overlay">
       <div className="shipment-form">
+
+
+        <h2>
+          {initialData ? "Edit Shipment Details" : "Enter Your Shipment Details"}
+        </h2>
 
         <h2>Enter Your Shipment Details</h2>
         <p>Tell us what you need to ship.</p>
@@ -64,7 +94,11 @@ onCancel();
           <label>Origin</label>
           <input
             name="origin"
+
+            value={formData.origin}
+
             value={shipment.origin}
+
             onChange={handleChange}
             placeholder="e.g. Mumbai"
             required
@@ -73,7 +107,10 @@ onCancel();
           <label>Destination</label>
           <input
             name="destination"
+
+            value={formData.destination}
             value={shipment.destination}
+
             onChange={handleChange}
             placeholder="e.g. Singapore"
             required
@@ -83,7 +120,11 @@ onCancel();
           <input
             type="date"
             name="shippingDate"
+
+            value={formData.shippingDate}
+
             value={shipment.shippingDate}
+
             onChange={handleChange}
             required
           />
@@ -91,7 +132,11 @@ onCancel();
           <label>Cargo Type</label>
           <select
             name="cargoType"
+
+            value={formData.cargoType}
+
             value={shipment.cargoType}
+
             onChange={handleChange}
             required
           >
@@ -106,7 +151,11 @@ onCancel();
           <label>Cargo Description</label>
           <textarea
             name="description"
+
+            value={formData.description}
+
             value={shipment.description}
+
             onChange={handleChange}
             placeholder="Describe your cargo..."
             required
@@ -118,9 +167,14 @@ onCancel();
             min="0.01"
             step="0.01"
             name="volume"
+
+            value={formData.volume}
+            onChange={handleChange}
+
             value={shipment.volume}
             onChange={handleChange}
             placeholder="e.g. 5"
+
             required
           />
 
@@ -130,6 +184,9 @@ onCancel();
             min="0.01"
             step="0.01"
             name="weight"
+
+            value={formData.weight}
+            onChange={handleChange}
             value={shipment.weight}
             onChange={handleChange}
             placeholder="e.g. 500"
@@ -139,6 +196,13 @@ onCancel();
           <label>Special Handling Requirements</label>
           <textarea
             name="specialRequirements"
+            value={formData.specialRequirements}
+            onChange={handleChange}
+            placeholder="e.g. Fragile or refrigerated"
+          />
+
+          <div className="shipment-buttons">
+            <button type="submit">{submitLabel}</button>
             value={shipment.specialRequirements}
             onChange={handleChange}
             placeholder="e.g. Fragile, refrigerated, or none"
