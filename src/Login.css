@@ -79,17 +79,17 @@
   padding: 14px;
   border: none;
   border-radius: 9px;
-  background: #08a88a;
-  color: white;
+  background: #B7D7E8;
+  color: #263746;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
+  transition: background 0.3s ease;
 }
 
 .login-submit:hover {
-  background: #078c73;
+  background: #F6C6D0;
 }
-
 .login-card .login-note {
   margin-top: 20px;
   margin-bottom: 0;
