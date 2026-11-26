@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
-
+import { useState } from "react";
+import { useShipments } from "./ShipmentContext";
 import ShipmentForm from "./ShipmentForm.jsx";
+import Marketplace from "./Marketplace.jsx";
 import "./Dashboard.css";
 
 import { auth, db } from "./firebase.js";
@@ -262,6 +264,34 @@ async function handleDeleteShipment(shipmentId) {
     alert("Shipment deleted successfully!");
 
     setSelectedShipment(null);
+function ExporterDashboard({ onLogout }) {
+  const { shipments, addShipment, deleteShipment } = useShipments();
+  const [showShipmentForm, setShowShipmentForm] = useState(false);
+  const [selectedShipment, setSelectedShipment] = useState(null);
+
+  const [showAIAssistant, setShowAIAssistant] = useState(false);
+const [aiDescription, setAiDescription] = useState("");
+
+
+
+  function handleShipmentSubmit(newShipment) {
+    const shipmentWithDetails = {
+      ...newShipment,
+      status: "Submitted",
+      id: Date.now()
+    };
+
+
+function handleShipmentSubmit(newShipment) {
+  const shipmentWithDetails = {
+    ...newShipment,
+    status: "Pending",
+    id: Date.now()
+  };
+
+  addShipment(shipmentWithDetails);
+  setShowShipmentForm(false);
+}
 
   } catch (error) {
     console.error("Delete error:", error);
@@ -312,7 +342,10 @@ async function handleDeleteShipment(shipmentId) {
 
 
         {/* Statistics */}
+        {/* Dashboard Statistics */}
 
+        {/* Statistics */}
+ 
         <div className="dashboard-stats">
 
           <div className="dashboard-card">
@@ -388,6 +421,7 @@ async function handleDeleteShipment(shipmentId) {
               Add Shipment
             </button>
 
+       
           </div>
 
 
@@ -399,25 +433,31 @@ async function handleDeleteShipment(shipmentId) {
               Describe your cargo in simple language and
               let AI help organise your shipment details.
             </p>
-
             <button
               type="button"
               onClick={() => alert("AI Assistant coming soon!")}
             >
               Try AI Assistant
             </button>
+           <button
+  type="button"
+  onClick={() => setShowAIAssistant(true)}
+>
+  Try AI Assistant
+</button>
+
 
           </div>
 
         </div>
 
 
-        {/* Shipment List */}
 
+        {/* Shipment List */}
+        {/* Recent Shipments */}
         <div className="recent-activity">
 
           <h2>My Shipments</h2>
-
 
           {loading ? (
 
@@ -428,6 +468,8 @@ async function handleDeleteShipment(shipmentId) {
             <p>{error}</p>
 
           ) : shipments.length === 0 ? (
+
+          {shipments.length === 0 ? (
 
             <div>
 
@@ -441,7 +483,7 @@ async function handleDeleteShipment(shipmentId) {
 
             <div className="shipment-list">
 
-              {shipments.map((shipment) => (
+              {shipments.map((shipment, index) => (
 
                 <div
                   className="shipment-card"
@@ -452,6 +494,10 @@ async function handleDeleteShipment(shipmentId) {
 
                     Shipment ID: {shipment.id}
 
+                <div className="shipment-card" key={index}>
+
+                  <p className="shipment-reference">
+                    Shipment ID: CS-{1001 + index}
                   </p>
 
 
@@ -502,8 +548,10 @@ async function handleDeleteShipment(shipmentId) {
 
                   <span className="shipment-status">
 
+
                     {shipment.status}
 
+                    {shipment.status || "Submitted"}
                   </span>
 
 
@@ -525,8 +573,36 @@ async function handleDeleteShipment(shipmentId) {
                     View Details
 
                   </button>
+                 
+                <button
+                    type="button"
+                    onClick={() => {
+                       const confirmDelete = window.confirm(
+                       "Are you sure you want to delete this shipment?"
+      );
+
+                   if (confirmDelete) {
+                         deleteShipment(Shipment.id);
+                         setSelectedShipment(null);
+  }
+}}
+  style={{
+    backgroundColor: "#dc3545",
+    color: "#ffffff",
+    border: "none",
+    padding: "10px 18px",
+    borderRadius: "8px",
+    cursor: "pointer",
+    marginTop: "12px",
+    marginLeft: "10px"
+  }}
+>
+  Delete Shipment
+</button>
+
 
                 </div>
+                
 
               ))}
 
@@ -552,7 +628,36 @@ async function handleDeleteShipment(shipmentId) {
         )}
 
       </div>
+        
 
+      </div>
+
+{/* Shipment Form */}
+{showShipmentForm && (
+  <ShipmentForm
+    onCancel={() => setShowShipmentForm(false)}
+    onSubmit={(newShipment) => {
+      addShipment({
+        ...newShipment,
+        id: Date.now(),
+        status: "Pending",
+      });
+
+      setShowShipmentForm(false);
+    {showShipmentForm && (
+  <ShipmentForm
+    onCancel={() => setShowShipmentForm(false)}
+    onSubmit={handleShipmentSubmit}
+  />
+)} 
+    }}
+  />
+)}
+
+{/* Marketplace */}
+<section>
+  <Marketplace />
+</section>
 
       {/* Shipment Details Modal */}
 
@@ -614,13 +719,58 @@ async function handleDeleteShipment(shipmentId) {
                selectedShipment.specialHandling ||
                "None"}
             </p>
+           
+<button
+  type="button"
+  onClick={() => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this shipment?"
+    );
 
+    if (confirmDelete) {
+      deleteShipment(selectedShipment.id);
+
+      setSelectedShipment(null);
+    }
+  }}
+  style={{
+    backgroundColor: "#dc3545",
+    color: "white",
+    padding: "10px 18px",
+    border: "none",
+    borderRadius: "8px",
+    cursor: "pointer",
+    marginRight: "10px"
+  }}
+>
+  Delete Shipment
+</button>
+
+<button
+  type="button"
+  onClick={() => setSelectedShipment(null)}
+>
+  Close
+</button>
+ 
+
+          </div>
+
+        </div>
+
+      )}
+
+    
+ 
+      {showAIAssistant && (
+        <div className="shipment-modal-overlay">
+          <div className="shipment-modal">
+            <h2>AI Cargo Assistant</h2>
 
             <p>
-              <strong>Status:</strong>{" "}
-              {selectedShipment.status}
+              Describe your cargo in simple language.
+              The assistant will help organise your shipment details.
             </p>
-
 
             <button
   type="button"
@@ -640,11 +790,41 @@ async function handleDeleteShipment(shipmentId) {
 >
   Close
 </button> 
-
+            <textarea
+              value={aiDescription}
+              onChange={(e) => setAiDescription(e.target.value)}
+              placeholder="Example: Ship 500 kg of electronics from Mumbai to Singapore."
+              rows={5}
+              style={{
+                width: "100%",
+                padding: "12px",
+                borderRadius: "8px",
+                border: "1px solid #ccc",
+                marginTop: "15px"
+              }}
+              />
+             <button
+                type="button"
+                disabled={!aiDescription.trim()}
+                onClick={() => alert("AI integration will be connected by Member 2.")}
+             >  
+                Generate Shipment Details
+            </button>
+            <button
+                 type="button"
+                 onClick={() => setAiDescription("")}
+            >
+                 Clear Description
+            </button>
+            
+            <button
+              type="button"
+              onClick={() => setShowAIAssistant(false)}
+            >
+              Close Assistant
+            </button>
           </div>
-
         </div>
-
       )}
 {showEditForm && selectedShipment && (
   <ShipmentForm

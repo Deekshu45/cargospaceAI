@@ -1,4 +1,5 @@
 
+import { useShipments } from "./ShipmentContext";
 import { useState } from "react";
 import "./Marketplace.css";
 
@@ -33,6 +34,7 @@ const sampleListings = [
 ];
 
 function Marketplace() {
+  const{shipments}=useShipments();
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
@@ -105,6 +107,30 @@ function Marketplace() {
             </div>
           </div>
         </section>
+        
+<section className="marketplace-listings">
+  <h2>Available Shipments</h2>
+
+  {shipments.length === 0 ? (
+    <p>No shipments available yet.</p>
+  ) : (
+    shipments.map((item) => (
+      <div className="listing-card" key={item.id}>
+        <h3>
+          {item.origin} → {item.destination}
+        </h3>
+
+        <p>Cargo Type: {item.cargoType}</p>
+        <p>Departure: {item.departureDate}</p>
+        <p>Weight: {item.weight} kg</p>
+        <p>Volume: {item.volume} CBM</p>
+
+        <span>{item.status}</span>
+      </div>
+    ))
+  )}
+</section>
+
 
         <section className="marketplace-results">
           <h2>Available Containers</h2>
