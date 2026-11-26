@@ -1,15 +1,15 @@
-
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  apiKey: "AIzaSyCHnvwPAcGJOry9G734kbSedlRJYRE2dP4",
+  authDomain: "cargospaceai.firebaseapp.com",
+  projectId: "cargospaceai",
+  storageBucket: "cargospaceai.firebasestorage.app",
+  messagingSenderId: "341942805451",
+  appId: "1:341942805451:web:3b75b51c9ae5eb5b2f8c4e",
+  measurementId: "G-KJEYR4W90T"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -18,4 +18,3 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 
 export default app;
-
