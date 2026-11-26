@@ -1,4 +1,4 @@
-
+import { testFirestoreConnection } from "./testFirebase.js";
 import React, { useState } from "react";
 import "./App.css";
 import Login from "./Login.jsx";
@@ -6,6 +6,9 @@ import ShipmentForm from "./ShipmentForm.jsx";
 import Marketplace from "./Marketplace.jsx";
 
 function App() {
+  <button onClick={testFirestoreConnection}>
+    Test Firebase Connection
+  </button>
   const [showLogin, setShowLogin] = useState(false);
   const [showShipment, setShowShipment] = useState(false);
   const [showMarketplace, setShowMarketplace] = useState(false);
