@@ -1,3 +1,6 @@
+
+import { useBookings } from "./BookingContext.jsx";
+
 import { useState, useEffect } from "react";
 import ContainerForm from "./ContainerForm.jsx";
 import "./ProviderDashboard.css";
@@ -129,6 +132,7 @@ const totalAvailableWeight = containers.reduce(
 );
     return(
 
+
 import { useState } from "react";
 import ContainerForm from "./ContainerForm.jsx";
 import "./ProviderDashboard.css";
@@ -136,6 +140,14 @@ import "./ProviderDashboard.css";
 function ProviderDashboard({ onLogout }) {
   const [showContainerForm, setShowContainerForm] = useState(false);
   const [containers, setContainers] = useState([]);
+  const [feedbackDrafts, setFeedbackDrafts] = useState({});
+  const {
+  bookings,
+  updateBookingStatus,
+  feedbackMessages,
+  sendFeedback,
+} = useBookings();
+
 
   // Calculate total available volume
   const totalAvailableVolume = containers.reduce(
@@ -228,7 +240,11 @@ function ProviderDashboard({ onLogout }) {
 
           <div className="provider-stat-card">
             <h3>Booking Requests</h3>
-            <h2>0</h2>
+            <h2>
+              
+            {bookings.filter((booking) => booking.bookingStatus === "Pending").length}
+
+            </h2>
             <p>Requests to review</p>
           </div>
 
@@ -505,12 +521,115 @@ Edit Listing
         </section>
 
         {/* Booking Requests */}
-        <section className="provider-bookings">
-          <h2>Booking Requests</h2>
+        
+<section className="provider-bookings">
+  <h2>Booking Requests</h2>
 
-          <p>You don't have any booking requests yet.</p>
-          <p>New exporter requests will appear here.</p>
-        </section>
+  {bookings.length === 0 ? (
+    <p>You don't have any booking requests yet.</p>
+  ) : (
+    bookings.map((booking) => (
+      <div className="listing-card" key={booking.id}>
+        <h3>
+          {booking.origin} → {booking.destination}
+        </h3>
+
+        <p>Cargo Type: {booking.cargoType}</p>
+        <p>Volume: {booking.volume} CBM</p>
+        <p>Weight: {booking.weight} KG</p>
+        <p>Agreed Price: ₹{booking.agreedPrice}</p>
+        <p>Booking Status: {booking.bookingStatus}</p>
+
+        {booking.bookingStatus === "Pending" && (
+          <>
+            <button
+              type="button"
+              className="booking-accept-btn"
+              onClick={() =>
+                updateBookingStatus(booking.id, "Accepted")
+              }
+            >
+              Accept Booking
+            </button>
+
+            <button
+              type="button"
+              className="booking-reject-btn"
+              onClick={() =>
+                updateBookingStatus(booking.id, "Rejected")
+              }
+            >
+              Reject Booking
+            </button>
+          </>
+        )}
+       {booking.bookingStatus === "Accepted" && (
+  <button
+    type="button"
+    className="booking-accept-btn"
+    onClick={() =>
+      updateBookingStatus(booking.id, "Shipped")
+    }
+  >
+    Mark as Shipped 🚚
+  </button>
+)} 
+<div className="booking-feedback">
+  <h3>Messages from Exporter</h3>
+
+  {feedbackMessages
+    .filter(
+      (message) =>
+        message.bookingId === booking.id &&
+        message.receiver === "Provider"
+    )
+    .map((message) => (
+      <p key={message.id}>
+        <strong>Exporter:</strong> {message.message}
+        <br />
+        <small>{message.date}</small>
+      </p>
+    ))}
+
+  <h3>Reply to Exporter</h3>
+
+  <textarea
+    value={feedbackDrafts[booking.id] || ""}
+    onChange={(e) =>
+      setFeedbackDrafts((previous) => ({
+        ...previous,
+        [booking.id]: e.target.value,
+      }))
+    }
+    placeholder="Write a reply to the exporter..."
+    rows={3}
+  />
+
+  <button
+    type="button"
+    disabled={!(feedbackDrafts[booking.id] || "").trim()}
+    onClick={() => {
+      sendFeedback(
+        booking.id,
+        "Provider",
+        "Exporter",
+        feedbackDrafts[booking.id]
+      );
+
+      setFeedbackDrafts((previous) => ({
+        ...previous,
+        [booking.id]: "",
+      }));
+    }}
+  >
+    Send Reply
+  </button>
+</div>
+      </div>
+    ))
+  )}
+</section>
+
 
       </main>
     </div>
