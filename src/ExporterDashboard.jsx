@@ -1,26 +1,47 @@
 
-import { useState } from "react";
+import { useState,useEffect } from "react";
+import { useBookings } from "./BookingContext.jsx";
 import { useShipments } from "./ShipmentContext";
 import ShipmentForm from "./ShipmentForm.jsx";
 import Marketplace from "./Marketplace.jsx";
-import "./Dashboard.css";
+import PaymentPage from "./PaymentPage.jsx";
+import "./Dashboard.css"
 
 function ExporterDashboard({ onLogout }) {
   const { shipments, addShipment, deleteShipment } = useShipments();
+  const {
+  bookings,
+  updatePaymentStatus,
+  feedbackMessages,
+  sendFeedback,
+} = useBookings();
+const [feedbackDrafts, setFeedbackDrafts] = useState({});
   const [showShipmentForm, setShowShipmentForm] = useState(false);
+  const [showPaymentPage, setShowPaymentPage] = useState(false);
+  const [reminderBooking, setReminderBooking] = useState(null);
+
+useEffect(() => {
+  const upcomingPayment = bookings.find((booking) => {
+    if (
+      booking.paymentStatus !== "Unpaid" ||
+      !booking.paymentDueDate
+    ) {
+      return false;
+    }
+
+    const daysLeft =
+      new Date(booking.paymentDueDate).getTime() - Date.now();
+
+    return daysLeft > 0 && daysLeft <= 2 * 24 * 60 * 60 * 1000;
+  });
+
+  setReminderBooking(upcomingPayment || null);
+}, [bookings]);
+
   const [selectedShipment, setSelectedShipment] = useState(null);
 
   const [showAIAssistant, setShowAIAssistant] = useState(false);
 const [aiDescription, setAiDescription] = useState("");
-
-
-
-  function handleShipmentSubmit(newShipment) {
-    const shipmentWithDetails = {
-      ...newShipment,
-      status: "Submitted",
-      id: Date.now()
-    };
 
 
 function handleShipmentSubmit(newShipment) {
@@ -33,20 +54,84 @@ function handleShipmentSubmit(newShipment) {
   addShipment(shipmentWithDetails);
   setShowShipmentForm(false);
 }
+if (showPaymentPage) {
+  return (
+    <PaymentPage
+      bookings={bookings}
+      updatePaymentStatus={updatePaymentStatus}
+      onBack={() => setShowPaymentPage(false)}
+    />
+  );
+}
 
+  
 
   return (
     <div className="dashboard">
+    
+{reminderBooking && (
+  <div className="payment-reminder-overlay">
+    <div className="payment-reminder-popup">
+      <h2>🔔 Payment Reminder!</h2>
+
+      <p>
+        Your payment deadline is approaching!
+      </p>
+
+      <p>
+        <strong>
+          {reminderBooking.origin} → {reminderBooking.destination}
+        </strong>
+      </p>
+
+      <p>
+        Please complete your payment soon to avoid delays.
+      </p>
+
+      <button
+        type="button"
+        className="pay-now-btn"
+        onClick={() => {
+          const confirmPayment = window.confirm(
+            "Confirm this simulated demo payment?"
+          );
+
+          if (confirmPayment) {
+            updatePaymentStatus(reminderBooking.id, "Paid (Demo)");
+            setReminderBooking(null);
+          }
+        }}
+      >
+        Pay Now
+      </button>
+
+      <button
+        type="button"
+        onClick={() => setReminderBooking(null)}
+      >
+        Remind Me Later
+      </button>
+    </div>
+  </div>
+)}
+  
 
       {/* Navigation */}
       <nav className="dashboard-nav">
-        <h2>CargoShare AI</h2>
-        <span>Exporter Dashboard</span>
+  <h2>CargoShare AI</h2>
+  <span>Exporter Dashboard</span>
 
-        <button type="button" onClick={onLogout}>
-          Logout
-        </button>
-      </nav>
+  <button
+    type="button"
+    onClick={() => setShowPaymentPage(true)}
+  >
+    My Payments
+  </button>
+
+  <button type="button" onClick={onLogout}>
+    Logout
+  </button>
+</nav>
 
       <div className="dashboard-content">
 
@@ -56,7 +141,142 @@ function handleShipmentSubmit(newShipment) {
           <p>
             Manage your shipments and discover affordable cargo space.
           </p>
-        </div>
+          </div>
+
+{/* Payments Section */}
+<section className="dashboard-card payment-section">
+  <h2>My Payments</h2>
+
+{bookings.filter(
+  (booking) =>
+    booking.bookingStatus === "Accepted" ||
+    booking.bookingStatus === "Shipped"
+).length === 0 ? (
+  <p>No accepted bookings available for payment yet.</p>
+) : (
+  bookings
+    .filter(
+      (booking) =>
+        booking.bookingStatus === "Accepted" ||
+        booking.bookingStatus === "Shipped"
+    )
+    .map((booking) => (
+      <div key={booking.id} className="payment-card">
+        <h3>
+          {booking.origin} → {booking.destination}
+        </h3>
+
+        {booking.bookingStatus === "Shipped" ? (
+          <p className="payment-accepted-message">
+            🚚 Great news! Your goods have been shipped by the logistics provider.
+          </p>
+        ) : (
+          <p className="payment-accepted-message">
+            ✓ The provider has accepted your request!
+          </p>
+        )}
+
+        <p>Amount: ₹{booking.agreedPrice}</p>
+        <p>Payment Status: {booking.paymentStatus}</p>
+        
+{booking.paymentStatus === "Unpaid" && booking.paymentDueDate && (
+  <>
+    <p>
+      <strong>Payment Due:</strong>{" "}
+      {new Date(booking.paymentDueDate).toLocaleDateString()}
+    </p>
+
+    <p className="payment-countdown">
+      {new Date(booking.paymentDueDate) >= new Date() ? (
+        `⏳ ${
+          Math.ceil(
+            (new Date(booking.paymentDueDate).getTime() - Date.now()) /
+              (1000 * 60 * 60 * 24)
+          )
+        } days remaining to pay.`
+      ) : (
+        "⚠️ Payment overdue! Please complete your payment."
+      )}
+    </p>
+  </>
+)}
+
+
+        {booking.paymentStatus === "Unpaid" && (
+          <button
+            type="button"
+            className="pay-now-btn"
+            onClick={() => {
+              const confirmPayment = window.confirm(
+                "Confirm this simulated demo payment?"
+              );
+
+              if (confirmPayment) {
+                updatePaymentStatus(booking.id, "Paid (Demo)");
+              }
+            }}
+          >
+            Pay Now
+          </button>
+        )}
+               <div className="booking-feedback">
+          <h3>Feedback to Logistics Provider</h3>
+
+          <textarea
+            value={feedbackDrafts[booking.id] || ""}
+            onChange={(e) =>
+              setFeedbackDrafts((previous) => ({
+                ...previous,
+                [booking.id]: e.target.value,
+              }))
+            }
+            placeholder="Write a message to your logistics provider..."
+            rows={3}
+          />
+
+          <button
+            type="button"
+            disabled={!(feedbackDrafts[booking.id] || "").trim()}
+            onClick={() => {
+              sendFeedback(
+                booking.id,
+                "Exporter",
+                "Provider",
+                feedbackDrafts[booking.id]
+              );
+
+              setFeedbackDrafts((previous) => ({
+                ...previous,
+                [booking.id]: "",
+              }));
+            }}
+          >
+            Send Feedback
+          </button>
+
+          <h4>Messages from Provider</h4>
+
+          {feedbackMessages
+            .filter(
+              (message) =>
+                message.bookingId === booking.id &&
+                message.receiver === "Exporter"
+            )
+            .map((message) => (
+              <p key={message.id}>
+                <strong>Provider:</strong> {message.message}
+                <br />
+                <small>{message.date}</small>
+              </p>
+            ))}
+        </div> 
+      </div>
+    ))
+)}
+
+
+</section>
+
 
 
         {/* Dashboard Statistics */}
@@ -225,7 +445,7 @@ function handleShipmentSubmit(newShipment) {
       );
 
                    if (confirmDelete) {
-                         deleteShipment(Shipment.id);
+                         deleteShipment(shipment.id);
                          setSelectedShipment(null);
   }
 }}
@@ -260,27 +480,16 @@ function handleShipmentSubmit(newShipment) {
 
       </div>
 
+      
 {/* Shipment Form */}
 {showShipmentForm && (
   <ShipmentForm
     onCancel={() => setShowShipmentForm(false)}
-    onSubmit={(newShipment) => {
-      addShipment({
-        ...newShipment,
-        id: Date.now(),
-        status: "Pending",
-      });
-
-      setShowShipmentForm(false);
-    {showShipmentForm && (
-  <ShipmentForm
-    onCancel={() => setShowShipmentForm(false)}
     onSubmit={handleShipmentSubmit}
   />
-)} 
-    }}
-  />
 )}
+
+
 
 {/* Marketplace */}
 <section>
@@ -425,7 +634,7 @@ function handleShipmentSubmit(newShipment) {
             </button>
           </div>
         </div>
-      )}
+          )}
     </div>
   );
 }

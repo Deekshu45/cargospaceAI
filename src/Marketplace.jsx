@@ -1,4 +1,4 @@
-
+import { useBookings } from "./BookingContext.jsx";
 import { useShipments } from "./ShipmentContext";
 import { useState } from "react";
 import "./Marketplace.css";
@@ -35,12 +35,13 @@ const sampleListings = [
 
 function Marketplace() {
   const{shipments}=useShipments();
+  const { addBooking } = useBookings();
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [selectedListing, setSelectedListing] = useState(null);
   const [message, setMessage] = useState("");
- const [bookingRequests, setBookingRequests] = useState([]); 
+ 
 
   const filteredListings = sampleListings.filter((item) => {
     const matchesOrigin = item.origin
@@ -190,29 +191,25 @@ function Marketplace() {
 
             <p>Estimated price: ₹{selectedListing.price.toLocaleString("en-IN")}</p>
 
-           <button
+           
+<button
   className="marketplace-button"
   onClick={() => {
-    const newRequest = {
-      id: Date.now(),
+    addBooking({
+      listingId: selectedListing.id,
       origin: selectedListing.origin,
       destination: selectedListing.destination,
       cargoType: "Electronics",
       volume: 5,
       weight: 1200,
-      status: "Pending"
-    };
+      agreedPrice: selectedListing.price,
+    });
 
-    setBookingRequests((previous) => [
-      ...previous,
-      newRequest
-    ]);
-
-    setMessage("Demo request submitted successfully. Status: Pending.");
+    setMessage("Demo booking request submitted successfully! Status: Pending.");
   }}
 >
   Request Cargo Space
-</button> 
+</button>
 
             {message && <p>{message}</p>}
 
