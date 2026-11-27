@@ -4,7 +4,7 @@ import "./App.css";
 import Login from "./Login.jsx";
 import ShipmentForm from "./ShipmentForm.jsx";
 import Marketplace from "./Marketplace.jsx";
-
+import AICargoAssistant from "./AICargoAssistant.jsx";
 function App() {
   <button onClick={testFirestoreConnection}>
     Test Firebase Connection
@@ -12,7 +12,7 @@ function App() {
   const [showLogin, setShowLogin] = useState(false);
   const [showShipment, setShowShipment] = useState(false);
   const [showMarketplace, setShowMarketplace] = useState(false);
-
+const [showAI, setShowAI] = useState(false);
 
   if (showShipment) {
     return (
@@ -109,7 +109,12 @@ function App() {
               >
                 Become a Provider
               </button>
-
+<button
+  className="secondary-btn"
+  onClick={() => setShowAI(true)}
+>
+  🤖 AI Cargo Assistant
+</button>
             </div>
           </div>
 
@@ -213,7 +218,11 @@ function App() {
         <p>Don't ship empty space. Share it.</p>
         <p>© 2026 CargoShare AI. All rights reserved.</p>
       </footer>
-
+{showAI && (
+  <AICargoAssistant
+    onClose={() => setShowAI(false)}
+  />
+)}
     </div>
   );
 }

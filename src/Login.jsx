@@ -38,7 +38,7 @@ function Login() {
 
     try {
 
-      await auth.signOut();
+    await auth.signOut();
 
       setCurrentUser(null);
 
@@ -81,34 +81,7 @@ function Login() {
 
   // Login and Signup
   async function handleSubmit(event) {
-const[isLoggedIn,setIsLoggedIn]=useState(false);
-if (isLoggedIn) {
-  if (role === "Exporter") {
-    return (
-  <ExporterDashboard
-    onLogout={() => setIsLoggedIn(false)}
-  />
-);
 
-  }
-
-  if (role === "Provider") {
-    return (
-  <ProviderDashboard
-    onLogout={() => setIsLoggedIn(false)}
-  />
-);
-
-  }
-if (role === "Provider") {
-  return (
-    <ProviderDashboard
-      onLogout={() => setIsLoggedIn(false)}
-    />
-  );
-}
-  
-}
 
     event.preventDefault();
 

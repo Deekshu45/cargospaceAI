@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import { useState } from "react";
-import { useShipments } from "./ShipmentContext";
 import ShipmentForm from "./ShipmentForm.jsx";
 import Marketplace from "./Marketplace.jsx";
 import "./Dashboard.css";
@@ -8,7 +6,7 @@ import "./Dashboard.css";
 import { auth, db } from "./firebase.js";
 
 import { onAuthStateChanged } from "firebase/auth";
-
+import AICargoAssistant from "./AICargoAssistant.jsx";
 import {
   collection,
   addDoc,
@@ -18,8 +16,7 @@ import {
   serverTimestamp,
   updateDoc,
   deleteDoc,
-  doc,
-  getDocs
+  doc
 } from "firebase/firestore";
 
 
@@ -29,6 +26,7 @@ function ExporterDashboard({ onLogout,user }) {
 const [showEditForm, setShowEditForm] = useState(false);
   const [shipments, setShipments] = useState([]);
 const [containers, setContainers] = useState([]);
+const [bookingRequests, setBookingRequests] = useState([]);
 const [showContainers, setShowContainers] = useState(false);
   const [selectedShipment, setSelectedShipment] = useState(null);
 
@@ -37,7 +35,9 @@ const [showContainers, setShowContainers] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const [error, setError] = useState("");
-
+  const [showAIAssistant, setShowAIAssistant] = useState(false);
+const [aiDescription, setAiDescription] = useState("");
+const [showAIChat, setShowAIChat] = useState(false);
 
   // Get logged-in exporter
   useEffect(() => {
@@ -104,36 +104,44 @@ const [showContainers, setShowContainers] = useState(false);
     return () => unsubscribe();
 
   }, [currentUser]);
-// Load available containers from Firestore
+// Load booking requests for logged-in exporter
 useEffect(() => {
 
-  const containerQuery = query(
-    collection(db, "containers")
+  if (!currentUser) {
+    setBookingRequests([]);
+    return;
+  }
+
+  const bookingQuery = query(
+    collection(db, "bookingRequests"),
+    where("exporterId", "==", currentUser.uid)
   );
 
   const unsubscribe = onSnapshot(
-    containerQuery,
+    bookingQuery,
+
     (snapshot) => {
 
-      const containerData = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data()
+      const requests = snapshot.docs.map((document) => ({
+        id: document.id,
+        ...document.data()
       }));
 
-      setContainers(containerData);
+      setBookingRequests(requests);
 
     },
+
     (error) => {
-      console.error("Loading containers error:", error);
+      console.error("Exporter booking error:", error);
     }
   );
 
   return () => unsubscribe();
 
-}, []);
+}, [currentUser]);
 
-  // Submit shipment to Firestore
-  async function handleShipmentSubmit(newShipment) {
+// Submit shipment to Firestore
+   async function handleShipmentSubmit(newShipment) {
 
     try {
 
@@ -198,18 +206,35 @@ async function handleBookingRequest(container) {
     alert("Please login first!");
     return;
   }
+const alreadyRequested = bookingRequests.some(
+  (request) =>
+    request.containerId === container.id &&
+    request.status !== "Rejected"
+);
 
+if (alreadyRequested) {
+  alert("You have already requested this container!");
+  return;
+}
   try {
+await addDoc(collection(db, "bookingRequests"), {
+  containerId: container.id,
+  providerId: container.providerId,
+  exporterId: currentUser.uid,
 
-    await addDoc(collection(db, "bookingRequests"), {
-      containerId: container.id,
-      providerId: container.providerId,
-      exporterId: currentUser.uid,
-      origin: container.origin,
-      destination: container.destination,
-      status: "Pending",
-      createdAt: serverTimestamp()
-    });
+  origin: container.origin,
+  destination: container.destination,
+
+  departureDate: container.departureDate,
+
+  volume: container.availableVolume,
+  weight: container.availableWeight,
+  price: container.price,
+
+  status: "Pending",
+  createdAt: serverTimestamp()
+});
+  
 
     alert("Booking request sent successfully!");
 
@@ -260,44 +285,17 @@ async function handleDeleteShipment(shipmentId) {
     const shipmentRef = doc(db, "shipments", shipmentId);
 
     await deleteDoc(shipmentRef);
+alert("Shipment deleted successfully!");
 
-    alert("Shipment deleted successfully!");
+setSelectedShipment(null);
 
-    setSelectedShipment(null);
-function ExporterDashboard({ onLogout }) {
-  const { shipments, addShipment, deleteShipment } = useShipments();
-  const [showShipmentForm, setShowShipmentForm] = useState(false);
-  const [selectedShipment, setSelectedShipment] = useState(null);
-
-  const [showAIAssistant, setShowAIAssistant] = useState(false);
-const [aiDescription, setAiDescription] = useState("");
-
-
-
-  function handleShipmentSubmit(newShipment) {
-    const shipmentWithDetails = {
-      ...newShipment,
-      status: "Submitted",
-      id: Date.now()
-    };
-
-
-function handleShipmentSubmit(newShipment) {
-  const shipmentWithDetails = {
-    ...newShipment,
-    status: "Pending",
-    id: Date.now()
-  };
-
-  addShipment(shipmentWithDetails);
-  setShowShipmentForm(false);
+} catch (error) {
+  console.error("Delete error:", error);
+  alert("Failed to delete shipment: " + error.message);
 }
-
-  } catch (error) {
-    console.error("Delete error:", error);
-    alert("Failed to delete shipment: " + error.message);
-  }
 }
+    
+
   return (
 
     <div className="dashboard">
@@ -363,10 +361,13 @@ function handleShipmentSubmit(newShipment) {
 
             <h3>Booking Requests</h3>
 
-            <h2>0</h2>
+           <h2>
+  {bookingRequests.filter(
+    (request) => request.status === "Pending"
+  ).length}
+</h2>
 
-            <p>Pending requests</p>
-
+<p>Pending requests</p>
           </div>
 
 
@@ -433,29 +434,158 @@ function handleShipmentSubmit(newShipment) {
               Describe your cargo in simple language and
               let AI help organise your shipment details.
             </p>
+          <div className="action-card">
+
+  <h2>AI Cargo Assistant</h2>
+
+  <p>
+    Get intelligent assistance with cargo,
+    shipping routes and logistics.
+  </p>
+
+  <button
+    type="button"
+    onClick={() => setShowAIAssistant(true)}
+  >
+    AI Cargo Description
+  </button>
+
+  <button
+    type="button"
+    onClick={() => setShowAIChat(true)}
+  >
+    Chat with AI
+  </button>
+
+</div>
+    </div>
+</div>        
+
+{/* Available Container Listings */}
+{showContainers && (
+  <div className="recent-activity">
+
+    <h2>Available Container Space</h2>
+
+    <button
+      type="button"
+      onClick={() => setShowContainers(false)}
+    >
+      Close
+    </button>
+
+    {containers.length === 0 ? (
+      <p>No container listings available right now.</p>
+    ) : (
+      <div className="shipment-list">
+
+        {containers.map((container) => (
+          <div className="shipment-card" key={container.id}>
+
+            <h3>
+              {container.origin} → {container.destination}
+            </h3>
+
+            <p>
+              <strong>Departure Date:</strong>{" "}
+              {container.departureDate}
+            </p>
+
+            <p>
+              <strong>Available Volume:</strong>{" "}
+              {container.availableVolume} CBM
+            </p>
+
+            <p>
+              <strong>Available Weight:</strong>{" "}
+              {container.availableWeight} KG
+            </p>
+
+            <p>
+              <strong>Price:</strong> ₹{container.price}
+            </p>
+
+            <p>
+              <strong>Restrictions:</strong>{" "}
+              {container.restrictions || "None"}
+            </p>
+
             <button
               type="button"
-              onClick={() => alert("AI Assistant coming soon!")}
+              onClick={() => handleBookingRequest(container)}
             >
-              Try AI Assistant
+              Request Booking
             </button>
-           <button
-  type="button"
-  onClick={() => setShowAIAssistant(true)}
->
-  Try AI Assistant
-</button>
-
 
           </div>
+        ))}
 
-        </div>
+      </div>
+    )}
+
+  </div>
+)}
 
 
 
         {/* Shipment List */}
         {/* Recent Shipments */}
         <div className="recent-activity">
+
+{/* My Booking Requests */}
+
+<section className="recent-activity">
+
+  <h2>My Booking Requests</h2>
+
+  {bookingRequests.length === 0 ? (
+
+    <p>You have not made any booking requests yet.</p>
+
+  ) : (
+
+    <div className="shipment-list">
+
+      {bookingRequests.map((request) => (
+
+        <div className="shipment-card" key={request.id}>
+
+          <h3>
+            {request.origin} → {request.destination}
+          </h3>
+
+          <p>
+            <strong>Booking ID:</strong> {request.id}
+          </p>
+
+          <p>
+          <strong>Booking Status:</strong>
+
+<span className="shipment-status">
+  {request.status === "Accepted"
+    ? "Booking Accepted ✅"
+    : request.status === "Rejected"
+    ? "Booking Rejected ❌"
+    : "Waiting for Provider ⏳"}
+</span>
+
+          </p>
+
+          <p>
+            <strong>Departure Date:</strong>
+            {" "}
+            {request.departureDate || "Not specified"}
+          </p>
+
+        </div>
+
+      ))}
+
+    </div>
+
+  )}
+
+</section>
 
           <h2>My Shipments</h2>
 
@@ -468,8 +598,6 @@ function handleShipmentSubmit(newShipment) {
             <p>{error}</p>
 
           ) : shipments.length === 0 ? (
-
-          {shipments.length === 0 ? (
 
             <div>
 
@@ -484,17 +612,9 @@ function handleShipmentSubmit(newShipment) {
             <div className="shipment-list">
 
               {shipments.map((shipment, index) => (
+                
 
-                <div
-                  className="shipment-card"
-                  key={shipment.id}
-                >
-
-                  <p className="shipment-reference">
-
-                    Shipment ID: {shipment.id}
-
-                <div className="shipment-card" key={index}>
+               <div className="shipment-card" key={shipment.id}>
 
                   <p className="shipment-reference">
                     Shipment ID: CS-{1001 + index}
@@ -549,10 +669,12 @@ function handleShipmentSubmit(newShipment) {
                   <span className="shipment-status">
 
 
-                    {shipment.status}
+                    
 
                     {shipment.status || "Submitted"}
                   </span>
+
+
 
 
                   <button
@@ -573,19 +695,19 @@ function handleShipmentSubmit(newShipment) {
                     View Details
 
                   </button>
-                 
+               <button
+  type="button"
+  onClick={() => {
+    setSelectedShipment(shipment);
+    setShowEditForm(true);
+  }}
+>
+  Edit Shipment
+</button>
+  
                 <button
                     type="button"
-                    onClick={() => {
-                       const confirmDelete = window.confirm(
-                       "Are you sure you want to delete this shipment?"
-      );
-
-                   if (confirmDelete) {
-                         deleteShipment(Shipment.id);
-                         setSelectedShipment(null);
-  }
-}}
+      onClick={() => handleDeleteShipment(shipment.id)}             
   style={{
     backgroundColor: "#dc3545",
     color: "#ffffff",
@@ -628,31 +750,7 @@ function handleShipmentSubmit(newShipment) {
         )}
 
       </div>
-        
 
-      </div>
-
-{/* Shipment Form */}
-{showShipmentForm && (
-  <ShipmentForm
-    onCancel={() => setShowShipmentForm(false)}
-    onSubmit={(newShipment) => {
-      addShipment({
-        ...newShipment,
-        id: Date.now(),
-        status: "Pending",
-      });
-
-      setShowShipmentForm(false);
-    {showShipmentForm && (
-  <ShipmentForm
-    onCancel={() => setShowShipmentForm(false)}
-    onSubmit={handleShipmentSubmit}
-  />
-)} 
-    }}
-  />
-)}
 
 {/* Marketplace */}
 <section>
@@ -722,17 +820,7 @@ function handleShipmentSubmit(newShipment) {
            
 <button
   type="button"
-  onClick={() => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this shipment?"
-    );
-
-    if (confirmDelete) {
-      deleteShipment(selectedShipment.id);
-
-      setSelectedShipment(null);
-    }
-  }}
+  onClick={() => handleDeleteShipment(selectedShipment.id)}
   style={{
     backgroundColor: "#dc3545",
     color: "white",
@@ -772,24 +860,7 @@ function handleShipmentSubmit(newShipment) {
               The assistant will help organise your shipment details.
             </p>
 
-            <button
-  type="button"
-  onClick={() => setShowEditForm(true)}
->
-  Edit Shipment
-</button>
-<button
-  type="button"
-  onClick={() => handleDeleteShipment(selectedShipment.id)}
->
-  Delete Shipment
-</button>
-<button
-  type="button"
-  onClick={() => setSelectedShipment(null)}
->
-  Close
-</button> 
+ 
             <textarea
               value={aiDescription}
               onChange={(e) => setAiDescription(e.target.value)}
@@ -826,6 +897,12 @@ function handleShipmentSubmit(newShipment) {
           </div>
         </div>
       )}
+     {showAIChat && (
+  <AICargoAssistant
+    onClose={() => setShowAIChat(false)}
+  />
+)} 
+  
 {showEditForm && selectedShipment && (
   <ShipmentForm
     initialData={selectedShipment}
@@ -837,8 +914,8 @@ function handleShipmentSubmit(newShipment) {
     </div>
 
   );
-
 }
+
 
 
 export default ExporterDashboard;
