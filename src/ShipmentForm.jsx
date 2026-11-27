@@ -1,31 +1,14 @@
 
-import { useState } from "react";
-import { useShipments } from "./ShipmentContext";
+import { useState, useEffect } from "react";
 import "./ShipmentForm.css";
 
 function ShipmentForm({
   onSubmit,
   onCancel,
-  initialData,
-  submitLabel = "Submit Shipment"
+  initialData = null,
+  submitLabel = "Submit Shipment",
 }) {
   const [formData, setFormData] = useState({
-    origin: initialData?.origin || "",
-    destination: initialData?.destination || "",
-    shippingDate: initialData?.shippingDate || "",
-    cargoType: initialData?.cargoType || "",
-    description:
-      initialData?.description ||
-      initialData?.cargoDescription || "",
-    volume: initialData?.volume ?? "",
-    weight: initialData?.weight ?? "",
-    specialRequirements:
-      initialData?.specialRequirements ||
-      initialData?.specialHandling || ""
-function ShipmentForm({ onCancel }) {
-  const { addShipment } = useShipments();
-
-  const [shipment, setShipment] = useState({
     origin: "",
     destination: "",
     shippingDate: "",
@@ -33,110 +16,124 @@ function ShipmentForm({ onCancel }) {
     description: "",
     volume: "",
     weight: "",
-    specialRequirements: ""
-
+    specialRequirements: "",
   });
 
   const [message, setMessage] = useState("");
 
+  useEffect(() => {
+    if (initialData) {
+      setFormData({
+        origin: initialData.origin || "",
+        destination: initialData.destination || "",
+        shippingDate: initialData.shippingDate || "",
+        cargoType: initialData.cargoType || "",
+        description:
+          initialData.description ||
+          initialData.cargoDescription ||
+          "",
+        volume: initialData.volume ?? "",
+        weight: initialData.weight ?? "",
+        specialRequirements:
+          initialData.specialRequirements ||
+          initialData.specialHandling ||
+          "",
+      });
+    }
+  }, [initialData]);
+
   function handleChange(event) {
     const { name, value } = event.target;
+
     setFormData((previous) => ({
-
-    setShipment((previous) => ({
-
       ...previous,
-      [name]: value
+      [name]: value,
     }));
+
+    setMessage("");
   }
 
-  async function handleSubmit(event) {
+  function handleSubmit(event) {
     event.preventDefault();
 
-    await onSubmit(formData);
+    if (
+      !formData.origin.trim() ||
+      !formData.destination.trim() ||
+      !formData.shippingDate ||
+      !formData.cargoType ||
+      !formData.volume ||
+      !formData.weight
+    ) {
+      setMessage("Please complete all required fields.");
+      return;
+    }
 
-    addShipment({
-  ...shipment,
-  status: "Submitted"
-});
+    if (
+      Number(formData.volume) <= 0 ||
+      Number(formData.weight) <= 0
+    ) {
+      setMessage("Volume and weight must be greater than zero.");
+      return;
+    }
 
-onCancel();
-
-    setMessage("Shipment submitted successfully!");
-
-    setShipment({
-      origin: "",
-      destination: "",
-      shippingDate: "",
-      cargoType: "",
-      description: "",
-      volume: "",
-      weight: "",
-      specialRequirements: ""
+    onSubmit({
+      ...formData,
+      volume: Number(formData.volume),
+      weight: Number(formData.weight),
     });
-
   }
 
   return (
     <div className="shipment-overlay">
       <div className="shipment-form">
 
-
         <h2>
-          {initialData ? "Edit Shipment Details" : "Enter Your Shipment Details"}
+          {initialData
+            ? "Edit Shipment Details"
+            : "Enter Your Shipment Details"}
         </h2>
 
-        <h2>Enter Your Shipment Details</h2>
         <p>Tell us what you need to ship.</p>
+
+        {message && (
+          <p className="error-message">{message}</p>
+        )}
 
         <form onSubmit={handleSubmit}>
 
-          <label>Origin</label>
+          <label>Origin *</label>
           <input
+            type="text"
             name="origin"
-
             value={formData.origin}
-
-            value={shipment.origin}
-
             onChange={handleChange}
             placeholder="e.g. Mumbai"
             required
           />
 
-          <label>Destination</label>
+          <label>Destination *</label>
           <input
+            type="text"
             name="destination"
-
             value={formData.destination}
-            value={shipment.destination}
-
             onChange={handleChange}
             placeholder="e.g. Singapore"
             required
           />
 
-          <label>Preferred Shipping Date</label>
+          <label>Preferred Shipping Date *</label>
           <input
             type="date"
             name="shippingDate"
-
             value={formData.shippingDate}
-
-            value={shipment.shippingDate}
-
             onChange={handleChange}
             required
           />
 
-          <label>Cargo Type</label>
+          <label>Cargo Type *</label>
           <select
             name="cargoType"
-
             value={formData.cargoType}
-
-            value={shipment.cargoType}
-
             onChange={handleChange}
             required
           >
@@ -151,43 +148,31 @@ onCancel();
           <label>Cargo Description</label>
           <textarea
             name="description"
-
             value={formData.description}
-
-            value={shipment.description}
-
             onChange={handleChange}
             placeholder="Describe your cargo..."
-            required
+            rows={3}
           />
 
-          <label>Volume (CBM)</label>
+          <label>Volume (CBM) *</label>
           <input
             type="number"
             min="0.01"
             step="0.01"
             name="volume"
-
             value={formData.volume}
             onChange={handleChange}
-
-            value={shipment.volume}
-            onChange={handleChange}
             placeholder="e.g. 5"
-
             required
           />
 
-          <label>Weight (KG)</label>
+          <label>Weight (KG) *</label>
           <input
             type="number"
             min="0.01"
             step="0.01"
             name="weight"
-
             value={formData.weight}
-            onChange={handleChange}
-            value={shipment.weight}
             onChange={handleChange}
             placeholder="e.g. 500"
             required
@@ -198,29 +183,27 @@ onCancel();
             name="specialRequirements"
             value={formData.specialRequirements}
             onChange={handleChange}
-            placeholder="e.g. Fragile or refrigerated"
-          />
-
-          <div className="shipment-buttons">
-            <button type="submit">{submitLabel}</button>
-            value={shipment.specialRequirements}
-            onChange={handleChange}
             placeholder="e.g. Fragile, refrigerated, or none"
+            rows={3}
           />
 
-          {message && <p>{message}</p>}
-
           <div className="shipment-buttons">
+
             <button type="submit">
-              Submit Shipment
+              {submitLabel}
             </button>
 
-            <button type="button" onClick={onCancel}>
+            <button
+              type="button"
+              onClick={onCancel}
+            >
               Cancel
             </button>
+
           </div>
 
         </form>
+
       </div>
     </div>
   );

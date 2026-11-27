@@ -26,11 +26,12 @@
 .provider-content {
   max-width: 1200px;
   margin: auto;
-  padding: 45px 25px;
+  padding: 0px 25px 45px;
 }
 
 .provider-welcome {
-  margin-bottom: 35px;
+  margin-top: 0;
+  margin-bottom: 20px;
 }
 
 .provider-welcome h1 {
@@ -206,4 +207,172 @@
 
 .booking-reject-btn:hover {
   background-color: #B91C1C;
+}
+
+/* Provider Dashboard Navigation Tabs */
+.provider-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 25px 0;
+}
+
+.provider-tab {
+  padding: 12px 20px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: white;
+  color: #333;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.provider-tab.active {
+  background: #087c76;
+  color: white;
+  border-color: #087c76;
+}
+
+/* Container Status */
+.container-status {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: #d1fae5;
+  color: #065f46;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+/* Earnings Page */
+.provider-earnings {
+  margin-top: 25px;
+}
+
+.earnings-history {
+  background: white;
+  padding: 22px;
+  margin-top: 25px;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+}
+
+.earnings-transaction {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 18px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.earnings-transaction:last-child {
+  border-bottom: none;
+}
+
+.earnings-transaction h3 {
+  margin: 5px 0;
+}
+
+.earnings-transaction p {
+  color: #666;
+  font-size: 13px;
+  margin: 5px 0;
+}
+
+.payment-paid {
+  display: inline-block;
+  background: #d1fae5;
+  color: #065f46;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+@media (max-width: 600px) {
+  .provider-tabs {
+    gap: 8px;
+  }
+
+  .provider-tab {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .earnings-transaction {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+/* Keep Provider welcome section close to shared page heading */
+.provider-dashboard .provider-content {
+  padding-top: 4px !important;
+}
+
+.provider-dashboard .provider-welcome {
+  margin-top: 0 !important;
+}
+/* Add Container Listing Button - Gradient Option A */
+.provider-dashboard .add-container-listing-btn {
+  background: linear-gradient(
+    110deg,
+    #C04489,
+    #94618F,
+    #496A83
+  ) !important;
+  color: #17212B !important;
+  border: none !important;
+  border-radius: 5px;
+  font-weight: 650;
+  transition: all 0.25s ease;
+}
+
+.provider-dashboard .add-container-listing-btn:hover {
+  background: linear-gradient(
+    110deg,
+    #A83275,
+    #795078,
+    #38566D
+  ) !important;
+  color: #17212B !important;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 14px rgba(73, 106, 131, 0.25);
+}
+
+/* Add Container Listing Button - Gradient Option A */
+.provider-dashboard .add-container-listing-btn {
+  background: linear-gradient(
+    110deg,
+    #C04489,
+    #94618F,
+    #496A83
+  ) !important;
+  color: #17212B !important;
+  border: none !important;
+  border-radius: 10px;
+  padding: 17px 36px !important;
+  min-width: 200px;
+  min-height: 50px;
+  font-size: 17px !important;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(73, 106, 131, 0.2);
+  transition: all 0.25s ease;
+}
+
+.provider-dashboard .add-container-listing-btn:hover {
+  background: linear-gradient(
+    110deg,
+    #A83275,
+    #795078,
+    #38566D
+  ) !important;
+  color: #17212B !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(73, 106, 131, 0.3);
 }
