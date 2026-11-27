@@ -44,7 +44,7 @@
    RESET AND BODY
 ====================================*/
 
- {
+*{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -611,3 +611,286 @@ a:focus-visible {
   border-color: #db61bf !important;
 }
 
+/* Active navigation page */
+.nav-links button {
+  background: transparent;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: inherit;
+  font-size: 15px;
+  transition: 0.3s ease;
+}
+
+.nav-links button:hover {
+  background: #e8eef7;
+}
+
+.nav-links button.active-nav {
+  background: #b83280;
+  color: white;
+  font-weight: 600;
+}
+
+/* Back button */
+.back-button {
+  margin: 15px 25px;
+  padding: 9px 16px;
+  border: 1px solid #b83280;
+  border-radius: 8px;
+  background: white;
+  color: #b83280;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.back-button:hover {
+  background: #b83280;
+  color: white;
+}
+.nav-back-button {
+  margin: 0 12px 0 0;
+  padding: 8px 13px;
+  font-size: 20px;
+}
+
+.nav-back-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Main two-row navigation */
+.site-navigation {
+  width: 100%;
+  background: white;
+  padding: 15px 5%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* First row */
+.navigation-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding-bottom: 15px;
+}
+
+.brand-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.top-back-button {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: white;
+  font-size: 23px;
+  cursor: pointer;
+}
+
+.top-back-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.logo {
+  font-size: 23px;
+  font-weight: 700;
+  color: #171717;
+  cursor: pointer;
+}
+
+/* Second row */
+.navigation-bottom {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #eee;
+  flex-wrap: wrap;
+}
+
+/* Rounded square navigation buttons */
+.page-nav-btn {
+  padding: 11px 22px;
+  min-height: 42px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: white;
+  color: #222;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.page-nav-btn:hover {
+  border-color: #b83280;
+  background: #fbedf5;
+}
+
+.page-nav-btn.active-nav {
+  background: #b83280;
+  border-color: #b83280;
+  color: white;
+}
+
+/* Mobile layout */
+@media (max-width: 600px) {
+  .site-navigation {
+    padding: 12px;
+  }
+
+  .navigation-top {
+    gap: 8px;
+  }
+
+  .logo {
+    font-size: 18px;
+  }
+
+  .nav-actions {
+    gap: 6px;
+  }
+
+  .navigation-bottom {
+    gap: 8px;
+  }
+
+  .page-nav-btn {
+    padding: 9px 12px;
+    font-size: 12px;
+  }
+}
+
+/* SETTINGS PAGE */
+
+.settings-section {
+  max-width: 1100px;
+  margin: 50px auto;
+  padding: 20px;
+}
+
+.settings-section h2 {
+  font-size: 32px;
+  color: #222;
+  margin-bottom: 10px;
+}
+
+.settings-section > p {
+  color: #666;
+  margin-bottom: 30px;
+  font-size: 16px;
+}
+
+/* Eight card grid */
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+}
+
+.settings-card {
+  position: relative;
+    text-align: left;
+  min-height: 180px;
+  background: white;
+  padding: 25px;
+  border: 1px solid #e5e5e5;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+}
+
+.settings-card:hover {
+  transform: translateY(-5px);
+  border-color: #b83280;
+  box-shadow: 0 8px 22px rgba(184, 50, 128, 0.12);
+}
+
+.settings-icon {
+  display: block;
+  font-size: 30px;
+  margin-bottom: 15px;
+}
+
+.settings-card h3 {
+  font-size: 19px;
+  color: #222;
+  margin-bottom: 10px;
+}
+
+.settings-card p {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.6;
+  padding-right: 20px;
+}
+
+.settings-arrow {
+  position: absolute;
+  right: 22px;
+  bottom: 22px;
+  font-size: 22px;
+  color: #b83280;
+}
+
+/* Selected settings section */
+
+.settings-detail {
+  background: white;
+  border: 1px solid #e5e5e5;
+  border-radius: 14px;
+  padding: 30px;
+  margin-top: 25px;
+}
+
+.settings-detail h3 {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.settings-detail p {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.settings-detail button {
+  background: #b83280;
+  color: white;
+  border: none;
+  padding: 11px 22px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Mobile responsive layout */
+
+@media (max-width: 500px) {
+  .settings-section {
+   text-align: left; 
+    margin: 25px auto;
+    padding: 15px;
+  }
+
+  .settings-section h2 {
+    font-size: 26px;
+  }
+
+  .settings-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .settings-card {
+    padding: 20px;
+  }
+}

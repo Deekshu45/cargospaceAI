@@ -75,24 +75,58 @@
   font-size: 15px;
 }
 
-.login-submit {
-  padding: 14px;
-  border: none;
-  border-radius: 9px;
-  background: #08a88a;
-  color: white;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.login-submit:hover {
-  background: #078c73;
-}
 
 .login-card .login-note {
   margin-top: 20px;
   margin-bottom: 0;
   font-size: 13px;
   text-align: center;
+}
+
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding-right: 65px;
+  box-sizing: border-box;
+}
+
+.show-password-btn {
+  position: absolute;
+  right: 10px;
+  border: none;
+  background: transparent;
+  color: #087c76;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 6px;
+}
+
+.login-error {
+  color: #dc2626;
+  background: #fee2e2;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  margin: 10px 0;
+}
+.login-page .login-card form button.login-submit {
+  background: linear-gradient(135deg, #b83280, #a7c7e7) !important;
+  color: white !important;
+  border: none !important;
+  opacity: 1 !important;
+  display: block !important;
+
+  width: 100%;
+  min-height: 48px;
+  padding: 14px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
 }

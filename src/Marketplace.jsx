@@ -33,7 +33,7 @@ const sampleListings = [
   }
 ];
 
-function Marketplace() {
+function Marketplace({ onNavigate, navigation }) {
   const{shipments}=useShipments();
   const { addBooking } = useBookings();
   const [origin, setOrigin] = useState("");
@@ -60,11 +60,7 @@ function Marketplace() {
 
   return (
     <div className="marketplace-page">
-      <header className="marketplace-header">
-        <h1>CargoShare AI</h1>
-        <span>Explore Cargo Space</span>
-      </header>
-
+      {navigation}
       <main className="marketplace-container">
         <section className="marketplace-heading">
           <h1>Find Shared Cargo Space</h1>

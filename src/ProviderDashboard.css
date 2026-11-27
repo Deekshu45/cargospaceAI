@@ -207,3 +207,101 @@
 .booking-reject-btn:hover {
   background-color: #B91C1C;
 }
+
+/* Provider Dashboard Navigation Tabs */
+.provider-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 25px 0;
+}
+
+.provider-tab {
+  padding: 12px 20px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: white;
+  color: #333;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.provider-tab.active {
+  background: #087c76;
+  color: white;
+  border-color: #087c76;
+}
+
+/* Container Status */
+.container-status {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: #d1fae5;
+  color: #065f46;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+/* Earnings Page */
+.provider-earnings {
+  margin-top: 25px;
+}
+
+.earnings-history {
+  background: white;
+  padding: 22px;
+  margin-top: 25px;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+}
+
+.earnings-transaction {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 18px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.earnings-transaction:last-child {
+  border-bottom: none;
+}
+
+.earnings-transaction h3 {
+  margin: 5px 0;
+}
+
+.earnings-transaction p {
+  color: #666;
+  font-size: 13px;
+  margin: 5px 0;
+}
+
+.payment-paid {
+  display: inline-block;
+  background: #d1fae5;
+  color: #065f46;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+@media (max-width: 600px) {
+  .provider-tabs {
+    gap: 8px;
+  }
+
+  .provider-tab {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .earnings-transaction {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
