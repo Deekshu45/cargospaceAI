@@ -76,6 +76,22 @@
 }
 
 
+.login-submit {
+  padding: 14px;
+  border: none;
+  border-radius: 9px;
+  background: #B7D7E8;
+  color: #263746;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.login-submit:hover {
+  background: #F6C6D0;
+}
+
 .login-card .login-note {
   margin-top: 20px;
   margin-bottom: 0;
