@@ -174,3 +174,83 @@
     font-size: 27px;
   }
 }
+
+/* Separate Contact Phone Number Box */
+.booking-phone-field {
+  margin: 24px 0 20px;
+  padding: 22px 24px;
+  background: #F8EDF3;
+  border: 1px solid #E3D3E0;
+  border-left: 5px solid #94618F;
+  border-radius: 13px;
+  box-shadow: 0 4px 14px rgba(47, 80, 97, 0.07);
+}
+
+.booking-phone-field label {
+  display: block;
+  margin-bottom: 12px;
+  color: #2F5061;
+  font-size: 15px;
+  font-weight: 750;
+}
+
+.booking-phone-field label::before {
+  content: "☎";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  border-radius: 8px;
+  background: linear-gradient(
+    110deg,
+    #C04489,
+    #94618F,
+    #496A83
+  );
+  color: #17212B;
+  font-size: 16px;
+}
+
+.booking-phone-field input {
+  display: block;
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 15px;
+  box-sizing: border-box;
+  border: 1px solid #D5C7D4;
+  border-radius: 9px;
+  background: #FFFFFF;
+  color: #2F5061;
+  font-size: 15px;
+  outline: none;
+  transition: 0.2s ease;
+}
+
+.booking-phone-field input::placeholder {
+  color: #929BA1;
+}
+
+.booking-phone-field input:focus {
+  border-color: #94618F;
+  box-shadow: 0 0 0 3px rgba(148, 97, 143, 0.14);
+}
+
+.booking-phone-field:focus-within {
+  border-color: #94618F;
+}
+
+/* Mobile styling */
+@media (max-width: 600px) {
+  .booking-phone-field {
+    padding: 18px 15px;
+    margin: 20px 0;
+  }
+
+  .booking-phone-field input {
+    min-height: 46px;
+    font-size: 14px;
+  }
+}
+

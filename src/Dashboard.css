@@ -485,3 +485,52 @@ body {
 .booking-feedback small {
   color: #64748b;
 }
+.download-receipt-btn {
+  background: #b83280;
+  color: white;
+  border: none;
+  padding: 11px 20px;
+  margin: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.download-receipt-btn:hover {
+  background: #922568;
+}
+/* Professional Payment Page Header */
+.payment-page-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.payment-back-btn {
+  padding: 11px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #087f78;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.payment-back-btn:hover {
+  background: #06665f;
+  transform: translateY(-1px);
+}
+
+.payment-page-header + h1 {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.payment-page-header + h1 + p {
+  text-align: center;
+  color: #64748b;
+}

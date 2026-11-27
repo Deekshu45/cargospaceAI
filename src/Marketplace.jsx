@@ -1,3 +1,4 @@
+
 import { useBookings } from "./BookingContext.jsx";
 import { useShipments } from "./ShipmentContext";
 import { useState } from "react";
@@ -34,14 +35,15 @@ const sampleListings = [
 ];
 
 function Marketplace({ onNavigate, navigation }) {
-  const{shipments}=useShipments();
+  const { shipments } = useShipments();
   const { addBooking } = useBookings();
+
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [selectedListing, setSelectedListing] = useState(null);
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [message, setMessage] = useState("");
- 
 
   const filteredListings = sampleListings.filter((item) => {
     const matchesOrigin = item.origin
@@ -58,9 +60,37 @@ function Marketplace({ onNavigate, navigation }) {
     return matchesOrigin && matchesDestination && matchesPrice;
   });
 
+  const handleBookingRequest = (event) => {
+    event.preventDefault();
+
+    const cleanedPhone = phoneNumber.trim();
+
+    if (!/^[0-9+() -]{7,20}$/.test(cleanedPhone)) {
+      setMessage("Please enter a valid phone number.");
+      return;
+    }
+
+    addBooking({
+      listingId: selectedListing.id,
+      origin: selectedListing.origin,
+      destination: selectedListing.destination,
+      cargoType: "Electronics",
+      volume: 5,
+      weight: 1200,
+      agreedPrice: selectedListing.price,
+      phoneNumber: cleanedPhone,
+    });
+
+    setMessage(
+      "Demo booking request submitted successfully! Status: Pending."
+    );
+    setPhoneNumber("");
+  };
+
   return (
     <div className="marketplace-page">
       {navigation}
+
       <main className="marketplace-container">
         <section className="marketplace-heading">
           <h1>Find Shared Cargo Space</h1>
@@ -104,30 +134,29 @@ function Marketplace({ onNavigate, navigation }) {
             </div>
           </div>
         </section>
-        
-<section className="marketplace-listings">
-  <h2>Available Shipments</h2>
 
-  {shipments.length === 0 ? (
-    <p>No shipments available yet.</p>
-  ) : (
-    shipments.map((item) => (
-      <div className="listing-card" key={item.id}>
-        <h3>
-          {item.origin} → {item.destination}
-        </h3>
+        <section className="marketplace-listings">
+          <h2>Available Shipments</h2>
 
-        <p>Cargo Type: {item.cargoType}</p>
-        <p>Departure: {item.departureDate}</p>
-        <p>Weight: {item.weight} kg</p>
-        <p>Volume: {item.volume} CBM</p>
+          {shipments.length === 0 ? (
+            <p>No shipments available yet.</p>
+          ) : (
+            shipments.map((item) => (
+              <div className="listing-card" key={item.id}>
+                <h3>
+                  {item.origin} → {item.destination}
+                </h3>
 
-        <span>{item.status}</span>
-      </div>
-    ))
-  )}
-</section>
+                <p>Cargo Type: {item.cargoType}</p>
+                <p>Departure: {item.departureDate}</p>
+                <p>Weight: {item.weight} kg</p>
+                <p>Volume: {item.volume} CBM</p>
 
+                <span>{item.status}</span>
+              </div>
+            ))
+          )}
+        </section>
 
         <section className="marketplace-results">
           <h2>Available Containers</h2>
@@ -144,9 +173,15 @@ function Marketplace({ onNavigate, navigation }) {
                 </h3>
 
                 <div className="container-info">
-                  <p>Capacity: <strong>{item.capacity} CBM</strong></p>
-                  <p>Container: <strong>{item.container}</strong></p>
-                  <p>Departure: <strong>{item.date}</strong></p>
+                  <p>
+                    Capacity: <strong>{item.capacity} CBM</strong>
+                  </p>
+                  <p>
+                    Container: <strong>{item.container}</strong>
+                  </p>
+                  <p>
+                    Departure: <strong>{item.date}</strong>
+                  </p>
                 </div>
 
                 <div className="container-price">
@@ -157,6 +192,7 @@ function Marketplace({ onNavigate, navigation }) {
                   className="marketplace-button"
                   onClick={() => {
                     setSelectedListing(item);
+                    setPhoneNumber("");
                     setMessage("");
                   }}
                 >
@@ -183,35 +219,51 @@ function Marketplace({ onNavigate, navigation }) {
               {" "}{selectedListing.destination}
             </p>
 
-            <p>Available capacity: {selectedListing.capacity} CBM</p>
+            <p>
+              Available capacity: {selectedListing.capacity} CBM
+            </p>
 
-            <p>Estimated price: ₹{selectedListing.price.toLocaleString("en-IN")}</p>
+            <p>
+              Estimated price: ₹
+              {selectedListing.price.toLocaleString("en-IN")}
+            </p>
 
-           
-<button
-  className="marketplace-button"
-  onClick={() => {
-    addBooking({
-      listingId: selectedListing.id,
-      origin: selectedListing.origin,
-      destination: selectedListing.destination,
-      cargoType: "Electronics",
-      volume: 5,
-      weight: 1200,
-      agreedPrice: selectedListing.price,
-    });
+            <form onSubmit={handleBookingRequest}>
+              <div className="booking-phone-field">
+                <label htmlFor="booking-phone">
+                  Contact Phone Number *
+                </label>
 
-    setMessage("Demo booking request submitted successfully! Status: Pending.");
-  }}
->
-  Request Cargo Space
-</button>
+                <input
+                  id="booking-phone"
+                  type="tel"
+                  value={phoneNumber}
+                  onChange={(e) => {
+                    setPhoneNumber(e.target.value);
+                    setMessage("");
+                  }}
+                  placeholder="Enter your contact number"
+                  maxLength={20}
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="marketplace-button"
+              >
+                Request Cargo Space
+              </button>
+            </form>
 
             {message && <p>{message}</p>}
 
             <button
               className="close-button"
-              onClick={() => setSelectedListing(null)}
+              onClick={() => {
+                setSelectedListing(null);
+                setMessage("");
+              }}
             >
               Close Details
             </button>

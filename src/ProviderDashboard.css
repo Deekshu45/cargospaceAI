@@ -26,11 +26,12 @@
 .provider-content {
   max-width: 1200px;
   margin: auto;
-  padding: 45px 25px;
+  padding: 0px 25px 45px;
 }
 
 .provider-welcome {
-  margin-bottom: 35px;
+  margin-top: 0;
+  margin-bottom: 20px;
 }
 
 .provider-welcome h1 {
@@ -304,4 +305,74 @@
     flex-direction: column;
     align-items: flex-start;
   }
+}
+/* Keep Provider welcome section close to shared page heading */
+.provider-dashboard .provider-content {
+  padding-top: 4px !important;
+}
+
+.provider-dashboard .provider-welcome {
+  margin-top: 0 !important;
+}
+/* Add Container Listing Button - Gradient Option A */
+.provider-dashboard .add-container-listing-btn {
+  background: linear-gradient(
+    110deg,
+    #C04489,
+    #94618F,
+    #496A83
+  ) !important;
+  color: #17212B !important;
+  border: none !important;
+  border-radius: 5px;
+  font-weight: 650;
+  transition: all 0.25s ease;
+}
+
+.provider-dashboard .add-container-listing-btn:hover {
+  background: linear-gradient(
+    110deg,
+    #A83275,
+    #795078,
+    #38566D
+  ) !important;
+  color: #17212B !important;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 14px rgba(73, 106, 131, 0.25);
+}
+
+/* Add Container Listing Button - Gradient Option A */
+.provider-dashboard .add-container-listing-btn {
+  background: linear-gradient(
+    110deg,
+    #C04489,
+    #94618F,
+    #496A83
+  ) !important;
+  color: #17212B !important;
+  border: none !important;
+  border-radius: 10px;
+  padding: 17px 36px !important;
+  min-width: 200px;
+  min-height: 50px;
+  font-size: 17px !important;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(73, 106, 131, 0.2);
+  transition: all 0.25s ease;
+}
+
+.provider-dashboard .add-container-listing-btn:hover {
+  background: linear-gradient(
+    110deg,
+    #A83275,
+    #795078,
+    #38566D
+  ) !important;
+  color: #17212B !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(73, 106, 131, 0.3);
 }

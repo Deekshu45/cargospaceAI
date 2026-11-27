@@ -136,14 +136,7 @@ function ProviderDashboard({ onLogout, user }) {
     <div className="provider-dashboard">
 
       {/* Navigation */}
-      <nav className="provider-navbar">
-        <h2>CargoShare AI</h2>
-        <span>Logistics Provider Dashboard</span>
-
-        <button type="button" onClick={onLogout}>
-          Logout
-        </button>
-      </nav>
+      <nav className="provider-navbar"></nav>
 
       <main className="provider-content">
 
@@ -218,13 +211,14 @@ function ProviderDashboard({ onLogout, user }) {
                   List your unused container capacity and connect
                   with exporters.
                 </p>
-
                 <button
-                  type="button"
-                  onClick={() => setShowContainerForm(true)}
-                >
-                  Add Container Listing
-                </button>
+  type="button"
+  className="add-container-listing-btn"
+  onClick={() => setShowContainerForm(true)}
+>
+  Add Container Listing
+</button>
+                
               </div>
 
               <div className="provider-action-card">
@@ -264,13 +258,14 @@ function ProviderDashboard({ onLogout, user }) {
         {activeTab === "My Containers" && (
           <section className="provider-bookings">
             <h2>My Published Containers</h2>
-
-            <button
-              type="button"
-              onClick={() => setShowContainerForm(true)}
-            >
-              + Add Container Listing
-            </button>
+<button
+  type="button"
+  className="add-container-listing-btn"
+  onClick={() => setShowContainerForm(true)}
+>
+  + Add Container Listing
+</button>
+            
 
             {containers.length === 0 ? (
               <p>No containers published yet.</p>
