@@ -15,6 +15,53 @@ import {
 
 function Marketplace() {
 
+import { useBookings } from "./BookingContext.jsx";
+import { useShipments } from "./ShipmentContext";
+import { useState } from "react";
+import "./Marketplace.css";
+
+const sampleListings = [
+  {
+    id: 1,
+    origin: "Mumbai",
+    destination: "Singapore",
+    capacity: 12,
+    price: 15000,
+    container: "40 ft",
+    date: "2026-12-15"
+  },
+  {
+    id: 2,
+    origin: "Chennai",
+    destination: "Dubai",
+    capacity: 8,
+    price: 11000,
+    container: "20 ft",
+    date: "2026-12-18"
+  },
+  {
+    id: 3,
+    origin: "Bengaluru",
+    destination: "Singapore",
+    capacity: 15,
+    price: 18000,
+    container: "40 ft",
+    date: "2026-12-22"
+  }
+];
+
+function Marketplace({ onNavigate, navigation }) {
+  const { shipments } = useShipments();
+  const { addBooking } = useBookings();
+
+  const [origin, setOrigin] = useState("");
+  const [destination, setDestination] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+  const [selectedListing, setSelectedListing] = useState(null);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [message, setMessage] = useState("");
+
+
   const [currentUser, setCurrentUser] = useState(auth.currentUser);
   const [containers, setContainers] = useState([]);
   const [bookingRequests, setBookingRequests] = useState([]);
@@ -193,9 +240,63 @@ function Marketplace() {
 
   }
 
+  const handleBookingRequest = (event) => {
+    event.preventDefault();
+
+    const cleanedPhone = phoneNumber.trim();
+
+    if (!/^[0-9+() -]{7,20}$/.test(cleanedPhone)) {
+      setMessage("Please enter a valid phone number.");
+      return;
+    }
+
+    addBooking({
+      listingId: selectedListing.id,
+      origin: selectedListing.origin,
+      destination: selectedListing.destination,
+      cargoType: "Electronics",
+      volume: 5,
+      weight: 1200,
+      agreedPrice: selectedListing.price,
+      phoneNumber: cleanedPhone,
+    });
+
+    setMessage(
+      "Demo booking request submitted successfully! Status: Pending."
+    );
+    setPhoneNumber("");
+  };
+
   return (
 
+    <div className="marketplace-page">
+      {navigation}
+
+      <main className="marketplace-container">
+        <section className="marketplace-heading">
+          <h1>Find Shared Cargo Space</h1>
+          <p>
+            Discover available container space and make
+            your shipping more affordable.
+          </p>
+        </section>
+
+        <section className="marketplace-search">
+          <h2>Search Available Space</h2>
+
+          <div className="search-grid">
+            <div>
+              <label>Origin</label>
+              <input
+                value={origin}
+                onChange={(e) => setOrigin(e.target.value)}
+                placeholder="Enter origin city"
+              />
+            </div>
+
+
     <div className="marketplace-container">
+
 
       <h1>Available Cargo Space</h1>
 
@@ -215,6 +316,43 @@ function Marketplace() {
         <p style={{ color: "red" }}>{error}</p>
       )}
 
+            <div>
+              <label>Maximum Price (₹)</label>
+              <input
+                type="number"
+                min="0"
+                value={maxPrice}
+                onChange={(e) => setMaxPrice(e.target.value)}
+                placeholder="Enter budget"
+              />
+            </div>
+          </div>
+        </section>
+
+        <section className="marketplace-listings">
+          <h2>Available Shipments</h2>
+
+          {shipments.length === 0 ? (
+            <p>No shipments available yet.</p>
+          ) : (
+            shipments.map((item) => (
+              <div className="listing-card" key={item.id}>
+                <h3>
+                  {item.origin} → {item.destination}
+                </h3>
+
+                <p>Cargo Type: {item.cargoType}</p>
+                <p>Departure: {item.departureDate}</p>
+                <p>Weight: {item.weight} kg</p>
+                <p>Volume: {item.volume} CBM</p>
+
+                <span>{item.status}</span>
+              </div>
+            ))
+          )}
+        </section>
+
+
       {!loading && currentUser && !error && containers.length === 0 && (
         <p>No available container listings right now.</p>
       )}
@@ -225,7 +363,21 @@ function Marketplace() {
 
           const existingRequest = getBookingStatus(container.id);
 
+
           return (
+
+                <div className="container-info">
+                  <p>
+                    Capacity: <strong>{item.capacity} CBM</strong>
+                  </p>
+                  <p>
+                    Container: <strong>{item.container}</strong>
+                  </p>
+                  <p>
+                    Departure: <strong>{item.date}</strong>
+                  </p>
+                </div>
+
 
             <div
               key={container.id}
@@ -282,6 +434,7 @@ function Marketplace() {
               ) : (
 
                 <button
+
                   type="button"
                   disabled={!currentUser || bookingLoading === container.id}
                   onClick={() => handleBookingRequest(container)}
@@ -292,12 +445,20 @@ function Marketplace() {
                     border: "none",
                     borderRadius: "8px",
                     cursor: "pointer"
+
+                  className="marketplace-button"
+                  onClick={() => {
+                    setSelectedListing(item);
+                    setPhoneNumber("");
+                    setMessage("");
+
                   }}
                 >
                   {bookingLoading === container.id
                     ? "Sending..."
                     : "Request Booking"}
                 </button>
+
 
               )}
 
@@ -308,6 +469,80 @@ function Marketplace() {
         })}
 
       </div>
+
+
+              </div>
+            ))}
+          </div>
+
+          {filteredListings.length === 0 && (
+            <p className="no-results">
+              No matching cargo listings found.
+              Try changing your search.
+            </p>
+          )}
+        </section>
+
+        {selectedListing && (
+          <div className="listing-details">
+            <h2>Container Details</h2>
+
+            <p>
+              Route: {selectedListing.origin} →
+              {" "}{selectedListing.destination}
+            </p>
+
+            <p>
+              Available capacity: {selectedListing.capacity} CBM
+            </p>
+
+            <p>
+              Estimated price: ₹
+              {selectedListing.price.toLocaleString("en-IN")}
+            </p>
+
+            <form onSubmit={handleBookingRequest}>
+              <div className="booking-phone-field">
+                <label htmlFor="booking-phone">
+                  Contact Phone Number *
+                </label>
+
+                <input
+                  id="booking-phone"
+                  type="tel"
+                  value={phoneNumber}
+                  onChange={(e) => {
+                    setPhoneNumber(e.target.value);
+                    setMessage("");
+                  }}
+                  placeholder="Enter your contact number"
+                  maxLength={20}
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="marketplace-button"
+              >
+                Request Cargo Space
+              </button>
+            </form>
+
+            {message && <p>{message}</p>}
+
+            <button
+              className="close-button"
+              onClick={() => {
+                setSelectedListing(null);
+                setMessage("");
+              }}
+            >
+              Close Details
+            </button>
+          </div>
+        )}
+      </main>
 
     </div>
 
