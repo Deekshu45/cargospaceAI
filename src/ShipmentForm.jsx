@@ -1,5 +1,8 @@
 
+import { useState } from "react";
+
 import { useState, useEffect } from "react";
+
 import "./ShipmentForm.css";
 
 function ShipmentForm({
@@ -9,6 +12,20 @@ function ShipmentForm({
   submitLabel = "Submit Shipment",
 }) {
   const [formData, setFormData] = useState({
+
+    origin: initialData?.origin || "",
+    destination: initialData?.destination || "",
+    shippingDate: initialData?.shippingDate || "",
+    cargoType: initialData?.cargoType || "",
+    description:
+      initialData?.description ||
+      initialData?.cargoDescription || "",
+    volume: initialData?.volume ?? "",
+    weight: initialData?.weight ?? "",
+    specialRequirements:
+      initialData?.specialRequirements ||
+      initialData?.specialHandling || ""
+
     origin: "",
     destination: "",
     shippingDate: "",
@@ -17,6 +34,7 @@ function ShipmentForm({
     volume: "",
     weight: "",
     specialRequirements: "",
+
   });
 
   const [message, setMessage] = useState("");
@@ -56,6 +74,16 @@ function ShipmentForm({
   function handleSubmit(event) {
     event.preventDefault();
 
+
+    
+    try {
+      await onSubmit(formData);
+      setMessage("Shipment submitted successfully!");
+    } catch (error) {
+      console.error("Shipment form error:", error);
+      setMessage("Failed to submit shipment.");
+    }
+
     if (
       !formData.origin.trim() ||
       !formData.destination.trim() ||
@@ -81,6 +109,7 @@ function ShipmentForm({
       volume: Number(formData.volume),
       weight: Number(formData.weight),
     });
+
   }
 
   return (
@@ -183,9 +212,17 @@ function ShipmentForm({
             name="specialRequirements"
             value={formData.specialRequirements}
             onChange={handleChange}
+
+            placeholder="e.g. Fragile or refrigerated"
+          />
+
+          {message && <p>{message}</p>}
+
+
             placeholder="e.g. Fragile, refrigerated, or none"
             rows={3}
           />
+
 
           <div className="shipment-buttons">
 

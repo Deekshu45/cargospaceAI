@@ -85,8 +85,13 @@
   padding: 14px 20px;
   border: none;
   border-radius: 9px;
+
+  background: #ec82be;
+  color: rgb(111, 68, 198);
+
   background: linear-gradient(110deg, #B83280, #754F83, #2F5061) !important;
   color: #FFFFFF !important;
+
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
@@ -95,12 +100,17 @@
   transition: all 0.25s ease;
 }
 
+
+.login-submit:hover {
+  background: #ee80d4;
+
 .login-submit:hover,
 .login-page .login-card form button.login-submit:hover {
   background: linear-gradient(110deg, #982768, #60416F, #233F50) !important;
   color: #FFFFFF !important;
   transform: translateY(-2px);
   box-shadow: 0 5px 14px rgba(47, 80, 97, 0.2);
+
 }
 
 .login-card .login-note {

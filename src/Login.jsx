@@ -22,7 +22,11 @@ function Login({ onLogin }) {
     event.preventDefault();
     setError("");
 
+
+    await auth.signOut();
+
     const normalizedEmail = email.trim().toLowerCase();
+
 
     if (!normalizedEmail || !password.trim()) {
       setError("Please enter your email and password.");
@@ -92,6 +96,58 @@ function Login({ onLogin }) {
       return;
     }
 
+
+  // Login and Signup
+  async function handleSubmit(event) {
+
+
+    event.preventDefault();
+
+    setError("");
+
+    setLoading(true);
+
+    try {
+
+      let userCredential;
+
+      if (isSignup) {
+
+        userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email.trim(),
+          password
+        );
+
+        await updateProfile(userCredential.user, {
+          displayName: fullName.trim()
+        });
+
+      } else {
+
+        userCredential = await signInWithEmailAndPassword(
+          auth,
+          email.trim(),
+          password
+        );
+
+      }
+
+      // Store authenticated Firebase user
+      setCurrentUser(userCredential.user);
+
+    } catch (error) {
+
+      console.error("Authentication Error:", error);
+
+      setError(error.message);
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
     const userData = {
       uid: existingUser.uid,
       email: existingUser.email,
@@ -155,6 +211,7 @@ function Login({ onLogin }) {
               Reset Password
             </button>
           </form>
+
 
           <button
             type="button"
